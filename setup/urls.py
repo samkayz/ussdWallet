@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('web/', include('web.urls')),
     path('confirm', views.confirm, name='confirm'),
+    path('', views.index, name='index'),
 ]

@@ -14,4 +14,6 @@ urlpatterns = [
     path('transfer/<mobile>', views.transfer, name='transfer'),
     path('accountVerify', views.accountVerify, name='accountVerify'),
     path('btranfer/<mobile>', views.btranfer, name='btranfer'),
+    path('getData/<scode>', views.getData, name='getData'),
+    path('buyAirtime/<mobile>', views.buyAirtime, name='buyAirtime'),
 ]

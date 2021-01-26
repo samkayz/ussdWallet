@@ -7,14 +7,17 @@ from web.models import *
 from rest_framework import status
 from rest_framework.response import Response
 import random
+from .serializers import *
 import string
 from datetime import datetime
 from monify import *
+from utility import *
 
 # Create your views here.
 MyClass = Main()
 User = get_user_model()
 mon = Monnify()
+uti = Utility()
 
 ex = 100
 
@@ -249,3 +252,80 @@ def btranfer(request, mobile):
         return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@api_view(['GET'])
+@permission_classes([])
+def getData(request, scode):
+    try:
+        snippet = MyClass.GetUtility(scode)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    serializer = UtilitySerializers(instance=snippet, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([])
+def buyAirtime(request, mobile):
+    base_date_time = datetime.now()
+    now = (datetime.strftime(base_date_time, "%Y-%m-%d %H:%M %p"))
+    network = request.data.get('network')
+    recmobile = request.data.get('number')
+    amount = request.data.get('amount')
+    pin = request.data.get('pin')
+    checkPin = MyClass.CheckPin(mobile, pin)
+    if User.objects.filter(mobile=mobile).exists() == False:
+        data = {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "status": "fail",
+            "reason": "Account doestn't exist within the system"
+        }
+        return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    elif checkPin == True:
+        checkbal = MyClass.CheckBal(mobile, amount)
+        if checkbal == True:
+            buy = uti.buy_airtime(network, amount, recmobile)
+            stat = buy['content']['transactions']['status']
+            if stat == 'delivered':
+                MyClass.BankTransfer(mobile, amount)
+                body = buy['content']['transactions']
+                tid = body['transactionId']
+                amt = body['unit_price']
+                rstat = "PAID"
+
+                txt_id = f'{tid}'
+                desc = body['product_name']
+                rmobile = body['unique_element']
+
+                MyClass.CreateLog(mobile, rmobile, txt_id, amt, now, rstat, desc, fee=0)
+                data = {
+                    "code": status.HTTP_200_OK,
+                    "status": "success",
+                    "amount": amount,
+                    "fee": 0,
+                    "reason": f'You have sent {float(amount)} to {rmobile}'
+                }
+                return Response(data=data, status=status.HTTP_200_OK)
+            else:
+                data = {
+                    "code": status.HTTP_400_BAD_REQUEST,
+                    "status": "fail",
+                    "reason": "Transaction fail"
+                }
+                return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            data = {
+                "code": status.HTTP_400_BAD_REQUEST,
+                "status": "fail",
+                "reason": "Insufficient balance"
+            }
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    
+    else:
+        data = {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "status": "fail",
+            "reason": "Invalid Transaction Pin"
+        }
+        return Response(data=data, status=status.HTTP_400_BAD_REQUEST)

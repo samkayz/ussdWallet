@@ -1,4 +1,4 @@
-#!/Users/apple/Documents/Project/payment/env/bin/python3
+#!/Users/ittrade/PycharmProjects/payment/env/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

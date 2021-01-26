@@ -107,3 +107,12 @@ class Pins(models.Model):
     class Meta:
         db_table = 'pins'
 
+class Utility(models.Model):
+    service_name = models.CharField(max_length=100)
+    service_id = models.CharField(max_length=100)
+    variation_code = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    variation_amount = models.FloatField()
+
+    class Meta:
+        db_table = 'utility'

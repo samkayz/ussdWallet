@@ -103,3 +103,7 @@ class Main:
         sendr = Wallet.objects.filter(mobile=mobile)
         sendr.update(bal=newBal)
         pass
+
+    def GetUtility(self, scode):
+        show = Utility.objects.filter(service_id=scode)
+        return show

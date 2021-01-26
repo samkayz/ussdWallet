@@ -52,3 +52,7 @@ def confirm(request):
         return HttpResponse(request_json, status=200)
     else:
         return HttpResponse(request_json, status=400)
+
+
+def index(request):
+    return render(request, 'index.html')
