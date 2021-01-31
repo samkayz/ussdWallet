@@ -2,7 +2,7 @@ import json
 import requests
 
 
-baseurl = 'https://23bccae6424d.ngrok.io'
+baseurl = 'https://6a9177178384.ngrok.io'
 
 class Main:
 
@@ -20,8 +20,8 @@ class Main:
         return resp
     
 
-    def SendMoney(self, amount, rec, pin):
-        url = f'{baseurl}/api/transfer/08022301477'
+    def SendMoney(self, amount, rec, pin, mobile):
+        url = f'{baseurl}/api/transfer/{mobile}'
 
         payload = {
             "amount": f'{amount}',
@@ -32,6 +32,35 @@ class Main:
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
+        resp = json.loads(response.text)
+        # print(resp)
+        return resp
+
+
+    def Check(self, mobile):
+        url = f'{baseurl}/api/check/{mobile}'
+
+        payload={}
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("GET", url, headers=headers, data=payload)
+        resp = json.loads(response.text)
+        return resp
+
+    
+    def SignUp(self, mobile, pin):
+        url = f'{baseurl}/api/signup'
+
+        payload = {
+            "mobile": f'{mobile}',
+            "pwd": f'{pin}',
+            "role":"user"
+            }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
         resp = json.loads(response.text)
         return resp
