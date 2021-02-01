@@ -2,7 +2,7 @@ import json
 import requests
 
 
-baseurl = 'https://6a9177178384.ngrok.io'
+baseurl = 'https://37bb30575339.ngrok.io'
 
 class Main:
 
@@ -64,3 +64,53 @@ class Main:
         response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
         resp = json.loads(response.text)
         return resp
+
+    
+    def GetBank(self, page):
+        url = f'{baseurl}/api/getBank?page={page}'
+
+        payload={}
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("GET", url, headers=headers, data=payload)
+
+        bank = json.loads(response.text)
+        return bank
+
+    
+    def VerifyBank(self, acct, bnkcode):
+        url = f'{baseurl}/api/accountVerify'
+
+        payload={
+            "accountNumber":f'{acct}',
+            "bankCode":f'{bnkcode}'
+            }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
+
+        vbnk = json.loads(response.text)
+        return vbnk
+
+    
+    def BankTranfer(self, mobile, amount, acctno, bnkcode, upin):
+        url = f'{baseurl}/api/btranfer/{mobile}'
+
+        payload={
+            "amount":f'{amount}',
+            "accountNumber":f'{acctno}',
+            "bankCode": f'{bnkcode}',
+            "pin":f'{upin}'
+            }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data= json.dumps(payload))
+
+        btranfer = json.loads(response.text)
+        return btranfer
