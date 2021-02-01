@@ -22,6 +22,14 @@ mon = Monnify()
 
 
 class Main:
+
+    def CheckUser(self, mobile):
+        if User.objects.filter(mobile=mobile).exists() == True:
+            return True
+        else:
+            return False
+
+            
     def Signup(self, mobile, pwd, role):
         res = mon.ReserveAccount(mobile)
         
@@ -106,4 +114,8 @@ class Main:
 
     def GetUtility(self, scode):
         show = Utility.objects.filter(service_id=scode)
+        return show
+
+    def GetBank(self):
+        show = Banks.objects.filter()
         return show

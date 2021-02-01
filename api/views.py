@@ -1,5 +1,7 @@
+from django.core import paginator
 from django.shortcuts import render
 from function import *
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
@@ -20,6 +22,18 @@ mon = Monnify()
 uti = Utility()
 
 ex = 100
+
+@api_view(['GET'])
+@permission_classes([])
+def Check(request, mobile):
+    resp = MyClass.CheckUser(mobile)
+    data = {
+        "code": status.HTTP_200_OK,
+        "status": "success",
+        "reason": resp
+    }
+    return Response(data=data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 @permission_classes([])
@@ -116,7 +130,7 @@ def transfer(request, mobile):
                 else:
                     amt = float(amount)
                     MyClass.SendMoney(amount, mobile, rec)
-                    MyClass.CreateLog(mobile, rec, txt_id, amt, now, status="PAID", desc="Wallet Transfer")
+                    MyClass.CreateLog(mobile, rec, txt_id, amt, now, status="PAID", desc="Wallet Transfer", fee=0)
                     data = {
                         "code": status.HTTP_200_OK,
                         "status": "success",
@@ -262,6 +276,21 @@ def getData(request, scode):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     serializer = UtilitySerializers(instance=snippet, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([])
+def getBank(request):
+    try:
+        snippet = MyClass.GetBank()
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    paginator = PageNumberPagination()
+    paginator.page_size = 5
+    result_page = paginator.paginate_queryset(snippet, request)
+    serializer = BankSerializers(instance=result_page, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 
 @api_view(['POST'])
