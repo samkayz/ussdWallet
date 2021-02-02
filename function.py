@@ -2,7 +2,7 @@ import json
 import requests
 
 
-baseurl = 'https://37bb30575339.ngrok.io'
+baseurl = 'https://justussd.savitechnig.com'
 
 class Main:
 
@@ -50,13 +50,13 @@ class Main:
         return resp
 
     
-    def SignUp(self, mobile, pin):
+    def SignUp(self, mobile, pin, role):
         url = f'{baseurl}/api/signup'
 
         payload = {
             "mobile": f'{mobile}',
             "pwd": f'{pin}',
-            "role":"user"
+            "role": f'{role}'
             }
         headers = {
             'Content-Type': 'application/json'
@@ -114,3 +114,22 @@ class Main:
 
         btranfer = json.loads(response.text)
         return btranfer
+    
+
+    def BuyAirtime(self, mobile, amount, recno, netw, pins):
+        url = f'{baseurl}/api/buyAirtime/{mobile}'
+
+        payload = {
+            "amount": f'{amount}',
+            "number": f'{recno}',
+            "network": f'{netw}',
+            "pin": f'{pins}'
+            }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
+
+        resp = json.loads(response.text)
+        return resp
