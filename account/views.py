@@ -40,10 +40,11 @@ def ussd(request):
                 if usd.Check(mobile)['reason'] == True:
                     response += "1. My Account \n"
                     response += "2. Wallet Transfer \n"
-                    response += "3. Wallet Transfer \n"
+                    response += "3. Bank Transfer \n"
                     response += "4. Buy Airtime \n"
                     response += "5. Buy Data \n"
-                    response += "6. TV \n"
+                    response += "7. TV \n"
+                    response += "6. WebPay (soon) \n"
                 else:
                     response += "0. Register"
             elif text == '1':
@@ -54,7 +55,7 @@ def ussd(request):
                 resp = usd.CheckBalance(mobile)
                 if resp['code'] == 200:
                     bal = resp['bal']
-                    response = "END " + bal
+                    response = "END Account Balance\n" + bal
                 else:
                     reason = resp['reason']
                     response = "END " + reason
@@ -63,7 +64,7 @@ def ussd(request):
                 if resp['code'] == 200:
                     acctNo = resp['acctNo']
                     bank = resp['bank']
-                    response = "END " + f'{acctNo} \n {bank}'
+                    response = "END Account Details\n" + f'{acctNo} \n {bank}'
                 else:
                     reason = resp['reason']
                     response = "END " + reason
@@ -87,7 +88,68 @@ def ussd(request):
                 else:
                     reason = resp['reason']
                     response = "END " + reason
+            elif text == '3':
+                response  = "CON Select Bank\n"
+                page = 1
+                bnks = usd.GetBank(page)
+                bnk = bnks['results']
+                for i in bnk:
+                    # print(i)
+                    name = i['name']
+                    code = i['code']
+                    response += f'{code}. {name}\n'
+                response += "00. Next \n"
             
+            elif steps[0] == '3' and count == 2 and steps[1] != '00':
+                response  = "CON \n"
+                response += "Enter Account Number \n"
+            
+            elif steps[0] == '3' and count == 3:
+                code = steps[1]
+                acctNo = steps[2]
+                verify = usd.VerifyBank(acctNo, code)
+                name = verify['accountName']
+                response  = f'CON {name} \n'
+                response += "Enter Amount \n"
+
+            elif steps[0] == '3' and count == 4:
+                code = steps[1]
+                acctNo = steps[2]
+                verify = usd.VerifyBank(acctNo, code)
+                name = verify['accountName']
+                response  = f'CON {name} \n'
+                response += "Enter PIN \n"
+            
+            elif steps[0] == '3' and count == 5:
+                code = steps[1]
+                acctNo = steps[2]
+                amount = steps[3]
+                pins = steps[4]
+                btrans = usd.BankTranfer(mobile, amount, acctNo, code, pins)
+                if btrans['code'] == 200:
+                    status = btrans['status']
+                    reason = btrans['reason']
+                    response = "END " + f'{status}\n{reason}'
+                else:
+                    status = btrans['status']
+                    reason = btrans['reason']
+                    response = "END " + f'{status}\n{reason}'
+                
+            elif steps[0] == '3' and count == 2:
+                response  = "CON Select Bank\n"
+                page = 2
+                bnks = usd.GetBank(page)
+                bnk = bnks['results']
+                for i in bnk:
+                    print(i)
+                    name = i['name']
+                    code = i['code']
+                    response += f'{code}. {name}\n'
+                response += "00. Next \n"
+            
+            elif steps[0] == '3' and count == 3:
+                response  = "CON \n"
+                response += "Enter Account Number \n"
             elif text == '4':
                 response  = "CON \n"
                 response += "Enter Mobile Number \n"
