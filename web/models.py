@@ -46,8 +46,8 @@ class UserManager(BaseUserManager):
     
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
-    email = models.EmailField(_('email address'), blank=True)
-    mobile = models.CharField(verbose_name='mobile', max_length=255, unique=True)
+    email = models.EmailField(blank=True)
+    mobile = models.CharField(max_length=255, unique=True)
     is_staff = models.BooleanField(verbose_name='is_staff', default=True)
     date_joined = models.DateTimeField(verbose_name='date_joined', auto_now_add=True)
     is_active = models.BooleanField(verbose_name='is_active', default=True)
@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects =  UserManager()
 
     USERNAME_FIELD = "mobile"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         db_table = 'user'

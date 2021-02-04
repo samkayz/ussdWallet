@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/ittrade/PycharmProjects/payment/env"
+VIRTUAL_ENV="/Users/apple/Documents/Project/payment/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

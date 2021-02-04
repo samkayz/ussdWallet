@@ -54,8 +54,9 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'web.User'
-ACCOUNT_USER_MODEL_EMAIL_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = False
+AUTHENTICATION_BACKENDS = ('web.backends.AuthBackend',)
+# ACCOUNT_USER_MODEL_EMAIL_FIELD = None
+# ACCOUNT_EMAIL_REQUIRED = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
