@@ -7,7 +7,9 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt
 from function import *
+from getbank import *
 usd = Main()
+
 
 
 # *384*1792#
@@ -89,67 +91,61 @@ def ussd(request):
                     reason = resp['reason']
                     response = "END " + reason
             elif text == '3':
-                response  = "CON Select Bank\n"
-                page = 1
-                bnks = usd.GetBank(page)
-                bnk = bnks['results']
-                for i in bnk:
-                    # print(i)
-                    name = i['name']
-                    code = i['code']
-                    response += f'{code}. {name}\n'
-                response += "00. Next \n"
-            
-            elif steps[0] == '3' and count == 2 and steps[1] != '00':
                 response  = "CON \n"
                 response += "Enter Account Number \n"
-            
-            elif steps[0] == '3' and count == 3:
-                code = steps[1]
-                acctNo = steps[2]
-                verify = usd.VerifyBank(acctNo, code)
-                name = verify['accountName']
-                response  = f'CON {name} \n'
-                response += "Enter Amount \n"
-
-            elif steps[0] == '3' and count == 4:
-                code = steps[1]
-                acctNo = steps[2]
-                verify = usd.VerifyBank(acctNo, code)
-                name = verify['accountName']
-                response  = f'CON {name} \n'
-                response += "Enter PIN \n"
-            
-            elif steps[0] == '3' and count == 5:
-                code = steps[1]
-                acctNo = steps[2]
-                amount = steps[3]
-                pins = steps[4]
-                btrans = usd.BankTranfer(mobile, amount, acctNo, code, pins)
-                if btrans['code'] == 200:
-                    status = btrans['status']
-                    reason = btrans['reason']
-                    response = "END " + f'{status}\n{reason}'
-                else:
-                    status = btrans['status']
-                    reason = btrans['reason']
-                    response = "END " + f'{status}\n{reason}'
                 
             elif steps[0] == '3' and count == 2:
                 response  = "CON Select Bank\n"
-                page = 2
-                bnks = usd.GetBank(page)
-                bnk = bnks['results']
-                for i in bnk:
-                    print(i)
-                    name = i['name']
-                    code = i['code']
-                    response += f'{code}. {name}\n'
-                response += "00. Next \n"
-            
+                acctNo = steps[1]
+                if acctNo == '':
+                    response = "END Please Enter Account"
+                else:
+                    banks = GetLikeBank(acctNo)
+                    for bnk in banks:
+                        code = bnk['code']
+                        name = bnk['name']
+                        response += f'{code}. {name}\n'
+    
             elif steps[0] == '3' and count == 3:
-                response  = "CON \n"
-                response += "Enter Account Number \n"
+                acno = steps[1]
+                bcode = steps[2]
+                verify = usd.VerifyBank(acno, bcode)
+                status = verify['code']
+                if status == 200:
+                    acctname = verify['accountName']
+                    response  = f'CON {acctname}\n'
+                    response += "Enter Amount \n"
+                else:
+                    reason = verify['reason']
+                    response = "END " + reason
+                    
+            elif steps[0] == '3' and count == 4:
+                acno = steps[1]
+                bcode = steps[2]
+                amt = steps[3]
+                if amt == '':
+                    response = "END Enter Valid Account"
+                else:
+                    verify = usd.VerifyBank(acno, bcode)
+                    acctname = verify['accountName']
+                    response  = f'CON {acctname}\n'
+                    response += "Enter PIN \n"
+            elif steps[0] == '3' and count == 5:
+                acno = steps[1]
+                bcode = steps[2]
+                amt = steps[3]
+                pins = steps[4]
+                btransfer = usd.BankTranfer(mobile, amt, acno, bcode, pins)
+                status = btransfer['code']
+                if status == 200:
+                    reason = btransfer['reason']
+                    response  = f'CON SUCCESSFUL\n'
+                    response = "END " + reason
+                else:
+                    reason = btransfer['reason']
+                    response  = f'CON FAIL\n'
+                    response = "END " + reason
+                
             elif text == '4':
                 response  = "CON \n"
                 response += "Enter Mobile Number \n"
