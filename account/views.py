@@ -45,10 +45,11 @@ def ussd(request):
                     response += "3. Bank Transfer \n"
                     response += "4. Buy Airtime \n"
                     response += "5. Buy Data \n"
-                    response += "7. TV \n"
-                    response += "6. WebPay (soon) \n"
+                    response += "6. TV \n"
+                    response += "7. WebPay (soon) \n"
                 else:
-                    response += "0. Register"
+                    response += "99. Register"
+                
             elif text == '1':
                 response  = "CON \n"
                 response += "1. Balance \n"
@@ -128,7 +129,7 @@ def ussd(request):
                 else:
                     verify = usd.VerifyBank(acno, bcode)
                     acctname = verify['accountName']
-                    response  = f'CON {acctname}\n'
+                    response  = f'CON {acctname} - N{amt}\n'
                     response += "Enter PIN \n"
             elif steps[0] == '3' and count == 5:
                 acno = steps[1]
@@ -137,10 +138,12 @@ def ussd(request):
                 pins = steps[4]
                 btransfer = usd.BankTranfer(mobile, amt, acno, bcode, pins)
                 status = btransfer['code']
+                verify = usd.VerifyBank(acno, bcode)
+                acctname = verify['accountName']
                 if status == 200:
                     reason = btransfer['reason']
                     response  = f'CON SUCCESSFUL\n'
-                    response = "END " + reason
+                    response = "END " + f'{reason}\n {acctname}'
                 else:
                     reason = btransfer['reason']
                     response  = f'CON FAIL\n'
@@ -186,29 +189,20 @@ def ussd(request):
                     resp = usd.BuyAirtime(mobile, amt, mno, netw, pins)
                     reason = resp['reason']
                     response = "END " + reason
-                
-            elif text == '0':
-                response  = "CON ACCOUNT TYPE \n"
-                response += "1. AGENT \n"
-                response += "2. USER \n"
-            elif steps[0] == '0' and count == 2:
+            elif steps[0] == '99':
                 response  = "CON \n"
                 response += "Enter You Personal PIN "
-            elif steps[0] == '0' and count == 3:
-                role = steps[1]
-                pins = steps[2]
-                
-                if role == '1':
-                    roles = 'agent'
-                    resp = usd.SignUp(mobile, pins, roles)
+                if steps[0] == '99' and count == 2:
+                    pins = steps[1]
+                    resp = usd.SignUp(mobile, pins)
                     reason = resp['reason']
                     response = "END " + f'{reason}'
-                else:
-                    roles = 'user'
-                    resp = usd.SignUp(mobile, pins, roles)
-                    reason = resp['reason']
-                    response = "END " + f'{reason}'
-                
+            
+            elif steps[0] == '7':
+                response = "END Web Payment\n Coming Soon"
+                    
+            elif steps[0] != '1' or steps[0] != '2' or steps[0] != '3' or steps[0] != '4' or steps[0] != '5' or steps[0] != '6' or steps[0] != '7' or steps[0] != '99':
+                response = "END Invalid Operation Number"
             return HttpResponse(response)
         except:
             return HttpResponse(response)

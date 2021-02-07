@@ -50,13 +50,13 @@ class Main:
         return resp
 
     
-    def SignUp(self, mobile, pin, role):
+    def SignUp(self, mobile, pin):
         url = f'{baseurl}/api/signup'
 
         payload = {
             "mobile": f'{mobile}',
             "pwd": f'{pin}',
-            "role": f'{role}'
+            "role": 'user'
             }
         headers = {
             'Content-Type': 'application/json'
