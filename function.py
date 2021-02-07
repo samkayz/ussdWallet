@@ -13,11 +13,12 @@ import os
 import random
 import string
 import uuid
-import datetime
+from datetime import datetime
 import time
+from sms import *
 from monify import *
 
-
+send_sms = SMS()
 mon = Monnify()
 
 
@@ -44,6 +45,8 @@ class Main:
             user.save()
             wal.save()
             pin.save()
+            msg = f'Welcome {mobile}, \n\n Your Registration was successful.\n ACCNO: {accountNumber}\n Bank: {bankName}\n PIN: {pwd}\n\n. Thank you.'
+            send_sms.SendSMS(mobile, msg)
             pass
 
         else:
@@ -119,3 +122,30 @@ class Main:
     def GetBank(self):
         show = Banks.objects.filter()
         return show
+
+    
+    def CreditSMS(self, mobile, rec, amt, txid):
+        base_date_time = datetime.now()
+        now = (datetime.strftime(base_date_time, "%Y-%m-%d %H:%M %p"))
+        rbal = Wallet.objects.values('bal').get(mobile=rec)['bal']
+        msg = f'{txid}\n Hi {rec}, \n You just receive N{amt} from  {mobile} on {now}.\n Bal: N{rbal} \n\nThank you!'
+        send_sms.SendSMS(rec, msg)
+        pass
+
+    def DebitSMS(self, mobile, rec, amt, txid):
+        base_date_time = datetime.now()
+        now = (datetime.strftime(base_date_time, "%Y-%m-%d %H:%M %p"))
+        sbal = Wallet.objects.values('bal').get(mobile=mobile)['bal']
+        msg = f'{txid}\n Hi {mobile}, \n You just sent N{amt} to  {rec} on {now}.\n Bal: N{sbal} \n\nThank you!'
+        send_sms.SendSMS(mobile, msg)
+        pass
+
+    def GetTvDetail(self, variation_code):
+        amount = Utility.objects.values('variation_amount').get(variation_code=variation_code)['variation_amount']
+        service_id = Utility.objects.values('service_id').get(variation_code=variation_code)['service_id']
+        return amount, service_id
+
+    def SendToken(self, mobile, token):
+        msg = f'Hi {mobile}, \n Here is your electricity token\n\n{token} \n\nThank you!'
+        send_sms.SendSMS(mobile, msg)
+        pass

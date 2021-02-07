@@ -1,0 +1,69 @@
+{% load static %}
+<div id="left-sidebar" class="sidebar">
+			<div class="sidebar_icon">
+				<ul class="nav nav-tabs">
+					<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Home-icon"><i class="icon-home"></i></a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Envelope-icon"><i class="icon-earphones"></i></a></li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#Profile-icon"><i class="icon-user"></i></a>
+						<a class="nav-link" href="#"><i class="icon-settings"></i></a>
+					</li>
+				</ul>
+			</div>
+			<div class="sidebar_list">
+				<div class="tab-content" id="main-menu">
+					<div class="tab-pane active" id="Home-icon">
+						<nav class="sidebar-nav sidebar-scroll">
+							<ul class="metismenu">
+								<li class="active"><a href="/web/home"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
+								<li class="header">Ready App</li>
+								<li><a href="/web/user"><i class="icon-users"></i><span>All User</span></a></li>
+								<li><a href="/web/log"><i class="icon-bubbles"></i><span>All Transaction</span></a></li>
+								<li><a href="#"><i class="icon-calendar"></i><span>Utility</span></a></li>
+								{% comment %} <li><a href="app-contact.html"><i class="icon-book-open"></i><span>Contact List</span></a></li>
+								<li><a href="app-todo.html"><i class="icon-check"></i><span>ToDo List</span></a></li>
+								<li><a href="app-support-ticket.html"><i class="icon-earphones-alt"></i><span>Support Ticket</span></a></li>
+								<li><a href="page-timeline.html"><i class="icon-list"></i><span>Timeline</span></a></li> {% endcomment %}
+								
+							</ul>
+						</nav>
+					</div>
+					<div class="tab-pane" id="Profile-icon">
+						<nav class="sidebar-nav sidebar-scroll">
+							<div class="user-detail">
+								<div class="text-center mb-3">
+									{% comment %} <img class="img-thumbnail rounded-circle" src="{% static 'assets/images/sm/avatar1.jpg'%}" alt=""> {% endcomment %}
+									<h6 class="mt-3 mb-0">System Aministrator</h6>
+									<div class="text-center text-muted">{{user.role|upper}}</div>
+									<hr>
+									<small class="text-muted">Email address: </small>
+									<p><a href="#">{{user.email}}</a></p>
+									<small class="text-muted">Mobile: </small>
+									<p>{{user.mobile}}</p>
+									
+								</div>
+								<hr>
+								
+							</div>
+						</nav>
+					</div>
+					<div class="tab-pane" id="Envelope-icon">
+						<nav class="sidebar-nav sidebar-scroll">
+							<a href="app-compose.html" class="btn btn-danger btn-block mb-3">Compose</a>
+							<ul class="metismenu">
+								<li class="active"><a href="app-inbox.html"><i class="icon-drawer"></i><span>Inbox</span><span class="badge badge-primary float-right">6</span></a></li>
+								<li><a href="javascript:void(0);"><i class="icon-cursor"></i><span>Sent</span><span class="badge badge-warning float-right">6</span></a></li>
+								<li><a href="javascript:void(0);"><i class="icon-envelope-open"></i><span>Draft</span></a></li>
+								<li><a href="javascript:void(0);"><i class="icon-action-redo"></i><span>Outbox</span></a></li>
+								<li><a href="javascript:void(0);"><i class="icon-trash"></i><span>Trash</span></a></li>
+								<li class="header">Labels</li>
+								<li><a href="javascript:void(0);"><i class="fa fa-circle-o text-danger"></i><span>Workshop</span></a></li>
+								<li><a href="javascript:void(0);"><i class="fa fa-circle-o text-info"></i><span>Private</span></a></li>
+								<li><a href="javascript:void(0);"><i class="fa fa-circle-o text-dark"></i><span>Paypal</span></a></li>
+								<li><a href="javascript:void(0);"><i class="fa fa-circle-o text-primary"></i><span>Comapny</span></a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>

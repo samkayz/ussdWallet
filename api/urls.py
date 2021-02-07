@@ -18,4 +18,8 @@ urlpatterns = [
     path('buyAirtime/<mobile>', views.buyAirtime, name='buyAirtime'),
     path('check/<mobile>', views.Check, name='check'),
     path('getBank', views.getBank, name='getBank'),
+    path('verifytv', views.VerifyTv, name='verifytv'),
+    path('tvPay/<mobile>', views.tvPay, name='tvPay'),
+    path('verifyPower', views.verifyPower, name='verifyPower'),
+    path('buypower/<mobile>', views.buypower, name='buypower'),
 ]

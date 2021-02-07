@@ -123,3 +123,12 @@ class Banks(models.Model):
 
     class Meta:
         db_table = 'banks'
+
+class EToken(models.Model):
+    mobile = models.TextField(null=True, blank=True)
+    ref = models.TextField(null=True, blank=True)
+    token = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'e_token'

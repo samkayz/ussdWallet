@@ -1,0 +1,269 @@
+{% load humanize %}
+<!doctype html>
+<html lang="en">
+{% include "web/head.html" %}
+<body class="theme-blue">
+
+	{% comment %} <div class="page-loader-wrapper">
+		<div class="loader">
+			<div class="m-t-30"><i class="fa fa-cube font-25"></i></div>
+			<p>Please wait...</p>
+		</div>
+	</div> {% endcomment %}
+
+	<div class="overlay"></div>
+	<div id="wrapper">
+		{% include 'web/nav.html' %}
+		
+		{% include 'web/sidebar.html' %}
+		<div id="main-content">
+			<div class="block-header">
+				<div class="row clearfix">
+					<div class="col-md-6 col-sm-12">
+						<h1>Dashboard</h1>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#"><i class="fa fa-cube"></i></a></li>
+								<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="col-md-6 col-sm-12 text-right hidden-xs">
+						<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="">Create Campaign</a>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row clearfix">
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="body">
+								<div class="w_summary">
+									<div class="s_chart">
+										<span class="chart">5,2,3,6,9,8,4,1,2,8</span>
+									</div>
+									<div class="s_detail">
+										<h2 class="font700 mb-0">$15K</h2>
+										<span>67% <i class="fa fa-level-up text-success"></i> Total income</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="body">
+								<div class="w_summary">
+									<div class="s_chart">
+										<span class="chart">6,3,2,5,8,9,5,4,2,3</span>
+									</div>
+									<div class="s_detail">
+										<h2 class="font700 mb-0">$1258</h2>
+										<span>15% <i class="fa fa-level-up text-success"></i> Total Expense</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="body">
+								<div class="w_summary">
+									<div class="s_chart">
+										<span class="chart">3,5,1,6,2,4,8,5,3,2</span>
+									</div>
+									<div class="s_detail">
+										<h2 class="font700 mb-0">$2315</h2>
+										<span>23% <i class="fa fa-level-up text-success"></i> Total Growth</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="body">
+								<div class="w_summary">
+									<div class="s_chart">
+										<span class="chart">8,5,2,9,6,3,4,5,6,7</span>
+									</div>
+									<div class="s_detail">
+										<h2 class="font700 mb-0">$1025</h2>
+										<span>52% <i class="fa fa-level-up text-success"></i> Bounce Rate</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col-lg-6 col-md-6">
+						<div class="card">
+							<div class="header">
+								<h2>Sales Reports</h2>
+								<ul class="header-dropdown dropdown">
+									<li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a></li>
+									<li class="dropdown">
+										<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
+										<ul class="dropdown-menu">
+											<li><a href="javascript:void(0);">Action</a></li>
+											<li><a href="javascript:void(0);">Another Action</a></li>
+											<li><a href="javascript:void(0);">Something else</a></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+							<div class="body">
+								<small class="text-muted">Sales Performance for Online and Offline Revenue</small>
+								<div id="flotChart" class="flot-chart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="header">
+								<h2>Page Views(Avg)</h2>
+							</div>
+							<div class="body text-center">
+								<h4>6.25</h4>
+								<p class="mb-2"><span><i class="fa fa-caret-up text-success ml-1"></i> +1.12</span> vs last month (4.0)</p>
+								<div id="Page_Views" style="height: 140px"></div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="body">
+								<div class="card-value float-right text-muted"><i class="icon-bubbles"></i></div>
+								<h3 class="mb-1">2,54,021</h3>
+								<div>Total Clicks</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="header">
+								<h2>Order status</h2>
+							</div>
+							<div class="body text-center">
+								<div id="Order_status" style="height: 268px"></div>
+								<hr>
+								<div class="row clearfix">
+									<div class="col-6">
+										<h6 class="mb-0">$3,095</h6>
+										<small class="text-muted">Last Month</small>
+									</div>
+									<div class="col-6">
+										<h6 class="mb-0">$2,763</h6>
+										<small class="text-muted">This Month</small>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col-lg-6 col-md-12">
+						<div class="card">
+							<div class="header">
+								<h2>Product Valuation</h2>
+							</div>
+							<div class="body">
+								<div id="chart-bar" style="height: 350px"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							<div class="header">
+								<h2>Sales Revenue</h2>
+							</div>
+							<div class="body text-center">
+								<div class="mt-4">
+									<input type="text" class="knob" value="34" data-width="147" data-height="147" data-thickness="0.07" data-bgColor="#ebeeef" data-fgColor="#395bb6">
+								</div>
+								<h3 class="mb-0 mt-3 font300">24,301 <span class="text-green font-15">+3.7%</span></h3>
+								<small>Lorem Ipsum is simply dummy text <br> <a href="#">Read more</a> </small>
+								<div class="mt-4">
+									<span class="chart_3">2,5,8,3,6,9,4,5,6,3</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-12">
+						<div class="card">
+							<div class="header">
+								<h2>My Balance</h2>
+							</div>
+							<div class="body">
+								<div class="card-value float-right text-blue">+15%</div>
+								<h4 class="mb-0 mt-2">$5,021.00</h4>
+							</div>
+							<div class="card-chart-bg">
+								<span id="linecustom">6,7,5,9,7,8,4,7,6,9,11,16,10,8,9,12</span>
+							</div>
+						</div>
+						<div class="card">
+							<div class="body top_counter">
+								<div class="icon bg-success text-white"><i class="fa fa-area-chart"></i> </div>
+								<div class="content">
+									<span>Growth</span>
+									<h5 class="number mb-0">62%</h5>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="body top_counter">
+								<div class="icon bg-warning text-white"><i class="fa fa-building"></i> </div>
+								<div class="content">
+									<span>Properties</span>
+									<h5 class="number mb-0">53,251</h5>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col-12 col-sm-12">
+						<div class="card">
+							<div class="header">
+								<h2>Product Summary</h2>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-custom spacing5 mb-0">
+									<thead>
+										<tr>
+											<th>#No</th>
+											<th>Sender</th>
+											<th>Ref ID</th>
+											<th>Reciever</th>
+											<th>Desc</th>
+											<th>Amount</th>
+											<th>Date</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for data in show %}
+										<tr>
+											<td>#{{forloop.counter}}</td>
+											<td>{{data.mobile}}</td>
+											<td>{{data.ref}}</td>
+											<td>{{data.rmobile}}</td>
+											<td>{{data.desc}}</td>
+											<td>₦ {{data.amount|intcomma}}</td>
+											<td>{{data.date}}</td>
+											<td><span class="badge badge-success">{{data.status}}</span></td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% include "web/foot.html" %}
+</body>
+</html>

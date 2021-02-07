@@ -50,3 +50,16 @@ class Main:
         messages.success(request, "Logout Successfully")
         resp = redirect('/web/')
         return resp
+
+    
+    def ShowTransLog(self):
+        show = Log.objects.filter()
+        return show
+
+    def GetUser(self):
+        users = User.objects.filter()
+        return users
+    
+    def GetWallet(self):
+        wallet = Wallet.objects.filter()
+        return wallet
