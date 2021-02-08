@@ -45,7 +45,7 @@ def ussd(request):
                     response += "3. Bank Transfer \n"
                     response += "4. Buy Airtime \n"
                     response += "5. Buy Data \n"
-                    response += "6. TV \n"
+                    response += "6. Pay Bills \n"
                     response += "7. WebPay (soon) \n"
                 else:
                     response += "99. Register"
@@ -197,7 +197,429 @@ def ussd(request):
                     resp = usd.SignUp(mobile, pins)
                     reason = resp['reason']
                     response = "END " + f'{reason}'
-            
+            elif steps[0] == '6':
+                response  = "CON \n"
+                response += "1. Buy Power \n"
+                response += "2. TV \n"
+                if steps[0] == '6' and steps[1] == '1':
+                    response  = "CON \n"
+                    response += "1. Ikeja Electric \n"
+                    response += "2. Eko Electric \n"
+                    response += "3. Kano Electric \n"
+                    response += "4. P.Harcourt Electric \n"
+                    response += "5. Ibadan Electric \n"
+                    response += "6. Kaduna Electric \n"
+                    response += "7. Abuja Electric \n"
+                    if steps[0] == '6' and steps[1] == '1' and steps[2] == '1':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ikeja-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ikeja-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='ikeja-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ikeja-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ikeja-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '1' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='ikeja-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+                    
+                    elif steps[0] == '6' and steps[1] == '1' and steps[2] == '2':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='eko-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='eko-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='eko-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='eko-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='eko-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '2' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='eko-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                    elif steps[0] == '6' and steps[1] == '1' and steps[2] == '3':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kano-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kano-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='kano-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kano-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kano-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '3' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='kano-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                    elif steps[0] == '6' and steps[1] == '1' and steps[2] == '4':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='portharcourt-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='portharcourt-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='portharcourt-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='portharcourt-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='portharcourt-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '4' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='portharcourt-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                    elif steps[0] == '6' and steps[1] == '1' and steps[2] == '5':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ibadan-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ibadan-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='ibadan-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ibadan-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='ibadan-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '5' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='ibadan-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                    elif steps[0] == '6' and steps[1] == '1' and steps[2] == '6':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kaduna-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kaduna-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='kaduna-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kaduna-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='kaduna-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '6' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='kaduna-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                    elif steps[0] == '6' and steps[1] == '1' and steps[2] == '7':
+                        response  = "CON \n"
+                        response += "1. Postpaid \n"
+                        response += "2. Prepaid \n"
+                        if steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '1':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '1' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='abuja-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                                response += "Enter Amount "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '1' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='abuja-electric', serviceType='postpaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '1' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='postpaid', serviceID='abuja-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                        elif steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '2':
+                            response  = "CON \n"
+                            response += "Enter Meter NO "
+                            if steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '2' and count == 5:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='abuja-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                if resp['status'] == 200:
+                                    customerName = resp['customerName']
+                                    response  = f'CON {customerName}\n'
+                                    response += "Enter Amount "
+                                else:
+                                    ends = resp['data']['message']
+                                    response = f'END {ends}'
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '2' and count == 6:
+                                meterNumber = steps[4]
+                                resp = usd.VerifyPower(serviceID='abuja-electric', serviceType='prepaid', meterNumber=f'{meterNumber}')
+                                customerName = resp['customerName']
+                                response  = f'CON {customerName}\n'
+                                response += "Enter PIN "
+                            elif steps[0] == '6' and steps[1] == '1' and steps[2] == '7' and steps[3] == '2' and count == 7:
+                                meterNumber = steps[4]
+                                amount = steps[5]
+                                pin = step
+                                resp = usd.PayPower(mobile, variation_code='prepaid', serviceID='abuja-electric', amount=f'{amount}', meterNumber=f'{meterNumber}', pin=f'{pin}')
+                                reas = resp['reason']
+                                response = f'END {reas}'
+
+                    else:
+                        response = "END Invalid Option"
+                else:
+                        response = "END Invalid Option"
             elif steps[0] == '7':
                 response = "END Web Payment\n Coming Soon"
                     

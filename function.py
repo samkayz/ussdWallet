@@ -133,3 +133,40 @@ class Main:
 
         resp = json.loads(response.text)
         return resp
+
+
+    def VerifyPower(self, serviceType, serviceID, meterNumber):
+        url = f'{baseurl}/api/verifyPower'
+
+        payload = {
+            "serviceType": serviceType,
+            "serviceID": serviceID,
+            "meterNumber": meterNumber
+            }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
+
+        resp = json.loads(response.text)
+        return resp
+
+    def PayPower(self, mobile, variation_code, serviceID, amount, meterNumber, pin):
+        url = f'{baseurl}/api/buypower/{mobile}'
+
+        payload = {
+            "variation_code": variation_code,
+            "serviceID": serviceID,
+            "amount": amount,
+            "meterNumber": meterNumber,
+            "pin":pin
+            }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data = json.dumps(payload))
+
+        resp = json.loads(response.text)
+        return resp
