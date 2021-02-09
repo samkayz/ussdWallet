@@ -21,4 +21,5 @@ urlpatterns = [
     path('web/', include('web.urls')),
     path('confirm', views.confirm, name='confirm'),
     path('', views.index, name='index'),
+    path('landing', views.landing, name='landing'),
 ]
