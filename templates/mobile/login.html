@@ -1,0 +1,109 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-100">
+
+{% include 'mobile/head.html' %}
+
+<body class="body-scroll d-flex flex-column h-100 menu-overlay">
+    <!-- screen loader -->
+    <div class="container-fluid h-100 loader-display">
+        <div class="row h-100">
+            <div class="align-self-center col">
+                <div class="logo-loading">
+                    <div class="icon icon-100 mb-4 rounded-circle">
+                        <img src="{% static 'mobile/img/favicon144.png'%}" alt="" class="w-100">
+                    </div>
+                    <h4 class="text-default">Finwallapp</h4>
+                    <p class="text-secondary">Mobile HTML template</p>
+                    <div class="loader-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 main has-footer">
+        <!-- Fixed navbar -->
+        <header class="header">
+            <div class="row">
+                <div class="col-auto px-0">
+                    <button class="btn btn-40 btn-link back-btn" type="button">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
+                </div>
+                <div class="text-left col align-self-center">
+                   
+                </div>
+                <div class="ml-auto col-auto align-self-center">
+                    <a href="/signup" class="text-white">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </header>
+        
+        
+        <div class="container h-100 text-white">
+            <div class="row h-100">
+                <div class="col-12 align-self-center mb-4">
+                    <div class="row justify-content-center">
+                        <div class="col-11 col-sm-7 col-md-6 col-lg-5 col-xl-4">
+                        <form method="POST" action="/login">
+                            {% csrf_token %}
+                            <h2 class="font-weight-normal mb-5">Login</h2>
+                            {% for message in messages %}
+						{% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+						<div class="alert alert-warning alert-dismissible fade show">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							{{message}}
+						</div>
+						{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+						<div class="alert alert-success alert-dismissible fade show">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							{{message}}
+						</div>
+						{% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+						<div class="alert alert-primary alert-dismissible fade show">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							{{message}}
+						</div>
+						{% endif %}
+						{% endfor %}
+                            <div class="form-group float-label active">
+                                <input type="number" name='mobile' class="form-control text-white" placeholder="(080---11111-----)" maxlength="11">
+                                <label class="form-control-label text-white">MOBILE NUMBER</label>
+                            </div>
+                            <div class="form-group float-label position-relative">
+                                <input type="password" name='password' class="form-control text-white" maxlength="4">
+                                <label class="form-control-label text-white">PIN</label>
+                            </div>  
+                            <p class="text-right"><a href="#" class="text-white">Forgot Password?</a></p>
+                            <div class="footer no-bg-shadow py-3">
+                                <div class="row justify-content-center">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-default rounded btn-block">Login</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- footer-->
+    
+{% include 'mobile/foot.html' %}  
+</body>
+</html>

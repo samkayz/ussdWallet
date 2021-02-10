@@ -28,7 +28,8 @@ from django.core import serializers
 from django.http import JsonResponse
 User = get_user_model()
 from function import *
-
+from .user_function import *
+func = Main()
 NewFunt = Main()
 
 
@@ -60,3 +61,27 @@ def index(request):
 
 def landing(request):
     return render(request, 'mobile/landing.html')
+
+def login(request):
+    if request.method == 'POST':
+        mobile = request.POST['mobile']
+        password = request.POST['password']
+        resp = func.UserLogin(request, mobile, password)
+        return resp
+    else:
+        return render(request, 'mobile/login.html')
+
+def signup(request):
+    return render(request, 'mobile/signup.html')
+
+
+@login_required(login_url='/login')
+def home(request):
+    mobile = request.user.mobile
+    user_wallet = func.ShowUserWallet(mobile)
+    return render(request, 'mobile/home.html',{'user_wallet':user_wallet})
+
+
+def logout(request):
+    resp = func.UserLogout(request)
+    return resp

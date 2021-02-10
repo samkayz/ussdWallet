@@ -22,4 +22,8 @@ urlpatterns = [
     path('confirm', views.confirm, name='confirm'),
     path('', views.index, name='index'),
     path('landing', views.landing, name='landing'),
+    path('login', views.login, name='login'),
+    path('signup', views.signup, name='signup'),
+    path('home', views.home, name='home'),
+    path('logout', views.logout, name='logout'),
 ]

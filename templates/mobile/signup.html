@@ -1,0 +1,98 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-100">
+{% include 'mobile/head.html' %}
+
+<body class="body-scroll d-flex flex-column h-100 menu-overlay">
+    <!-- screen loader -->
+    <div class="container-fluid h-100 loader-display">
+        <div class="row h-100">
+            <div class="align-self-center col">
+                <div class="logo-loading">
+                    <div class="icon icon-100 mb-4 rounded-circle">
+                        <img src="{% static 'mobile/img/favicon144.png'%}" alt="" class="w-100">
+                    </div>
+                    <h4 class="text-default">Finwallapp</h4>
+                    <p class="text-secondary">Mobile HTML template</p>
+                    <div class="loader-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 main has-footer">
+        <!-- Fixed navbar -->
+        <header class="header">
+            <div class="row">
+                <div class="col-auto px-0">
+                    <button class="btn btn-40 btn-link back-btn" type="button">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
+                </div>
+                <div class="text-left col align-self-center">
+
+                </div>
+                <div class="ml-auto col-auto align-self-center">
+                    <a href="/login" class="text-white">
+                        Sign In
+                    </a>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="container h-100 text-white">
+            <div class="row h-100">
+                <div class="col-12 align-self-center mb-4">
+                    <div class="row justify-content-center">
+                        <div class="col-11 col-sm-7 col-md-6 col-lg-5 col-xl-4">
+                            <h2 class="font-weight-normal mb-5">Create account</h2>
+                            <div class="form-group float-label active">
+                                <input type="text" class="form-control text-white" value="MaxartBond">
+                                <label class="form-control-label text-white">Username/Email</label>
+                            </div>
+                            <div class="form-group float-label position-relative">
+                                <input type="password" class="form-control text-white ">
+                                <label class="form-control-label text-white">Password</label>
+                            </div>
+                            <div class="form-group float-label position-relative">
+                                <input type="password" class="form-control text-white ">
+                                <label class="form-control-label text-white">Confirm Password</label>
+                            </div>
+                            <div class="form-group float-label position-relative">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                    <label class="custom-control-label" for="customSwitch1">Agree to terms and condition</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- footer-->
+    <div class="footer no-bg-shadow py-3">
+        <div class="row justify-content-center">
+            <div class="col">
+                <a href="index.html" class="btn btn-default rounded btn-block">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+
+{% include 'mobile/foot.html' %}
+
+</body>
+</html>
