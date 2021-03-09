@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'web',
     'api',
+    'merchant',
 ]
 
 AUTH_USER_MODEL = 'web.User'

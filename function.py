@@ -31,7 +31,7 @@ class Main:
             return False
 
             
-    def Signup(self, mobile, pwd, role):
+    def Signup(self, mobile, pwd):
         res = mon.ReserveAccount(mobile)
         
         status = res[1]
@@ -39,7 +39,7 @@ class Main:
             accountNumber = res[0]['accountNumber']
             bankName = res[0]['bankName']
 
-            user = User.objects.create_user(email="", mobile=mobile, password=pwd, role=role)
+            user = User.objects.create_user(email="", mobile=mobile, password=pwd, is_user=True)
             wal = Wallet(mobile=mobile, acctno=accountNumber, bank=bankName)
             pin = Pins(mobile=mobile, pin=pwd)
             user.save()
@@ -47,6 +47,33 @@ class Main:
             pin.save()
             msg = f'Welcome {mobile}, \n\n Your Registration was successful.\n ACCNO: {accountNumber}\n Bank: {bankName}\n PIN: {pwd}\n\n. Thank you.'
             send_sms.SendSMS(mobile, msg)
+            pass
+
+        else:
+            print(status)
+            pass
+        
+        
+    def MerchantSignup(self, mobile, pwd, fullname, email):
+        res = mon.ReserveAccount(mobile)
+        
+        status = res[1]
+        if status == True:
+            accountNumber = res[0]['accountNumber']
+            bankName = res[0]['bankName']
+
+            user = User.objects.create_user(email=email, mobile=mobile, password=pwd, is_merchant=True, fullname=fullname)
+            wal = Wallet(mobile=mobile, acctno=accountNumber, bank=bankName)
+            pin = Pins(mobile=mobile, pin=pwd)
+            merc = Merchant(mobile=mobile)
+            mercKey = MerchantKey(mobile=mobile)
+            merc.save()
+            mercKey.save()
+            user.save()
+            wal.save()
+            pin.save()
+            msg = f'Welcome {fullname}, \n\n Your Registration was successful.\n ACCNO: {accountNumber}\n Bank: {bankName}\n PIN: {pwd}\n\n. Thank you.'
+            # send_sms.SendSMS(mobile, msg)
             pass
 
         else:

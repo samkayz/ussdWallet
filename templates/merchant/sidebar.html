@@ -1,0 +1,42 @@
+{% load static %}
+<aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- User profile -->
+                <div class="user-profile">
+                    <!-- User profile image -->
+                    <div class="profile-img"> <img src="{% static 'merchant/assets/images/profile.png'%}" alt="user" />
+                        <!-- this is blinking heartbit-->
+                    </div>
+                    <!-- User profile text-->
+                    <div class="profile-text">
+                        <h5>{{user.fullname|upper}}</h5>
+                        <a href="/merchant/logout" class="" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
+                    </div>
+                </div>
+                <!-- End User profile text-->
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-devider"></li>
+                        <li class="nav-small-cap">PERSONAL</li>
+                        <li><a href="/merchant/home"><i class="mdi mdi-gauge"></i>Dashboard</a></li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">History</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="/web/allpin">All Pin</a></li>
+                                <li><a href="/web/usedpin">Used Pin</a></li>
+                                <li><a href="/web/payment">Payment</a></li>
+                            </ul>
+                        </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-settings"></i><span class="hide-menu">Configuration</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="#">SMS Settings</a></li>
+                                <li><a href="#">Monify Settings</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>

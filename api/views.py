@@ -40,7 +40,6 @@ def Check(request, mobile):
 def signup(request):
     mobile = request.data.get('mobile')
     pwd = request.data.get('pwd')
-    role = request.data.get('role')
 
     if User.objects.filter(mobile=mobile).exists():
         data = {
@@ -71,7 +70,7 @@ def signup(request):
         }
         return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
     else:
-        MyClass.Signup(mobile, pwd, role)
+        MyClass.Signup(mobile, pwd)
         data = {
             "code": status.HTTP_200_OK,
             "status": "success",

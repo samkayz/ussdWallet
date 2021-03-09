@@ -48,10 +48,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = None
     email = models.EmailField(blank=True)
     mobile = models.CharField(max_length=255, unique=True)
+    fullname = models.TextField(verbose_name='fullname', null=True, blank=True)
     is_staff = models.BooleanField(verbose_name='is_staff', default=True)
     date_joined = models.DateTimeField(verbose_name='date_joined', auto_now_add=True)
     is_active = models.BooleanField(verbose_name='is_active', default=True)
-    role = models.CharField(verbose_name='role', max_length=255)
+    is_user = models.BooleanField(verbose_name='is_user', default=False)
+    is_merchant = models.BooleanField(verbose_name='is_merchant', default=False)
 
     objects =  UserManager()
 
@@ -117,6 +119,26 @@ class Utility(models.Model):
     class Meta:
         db_table = 'utility'
 
+
+class Merchant(models.Model):
+    mobile = models.TextField(null=True, blank=True)
+    done = models.BooleanField(default=False)
+    bus_name = models.TextField(null=True, blank=True)
+    bus_address = models.TextField(null=True, blank=True)
+    callbackurl = models.URLField(null=True, blank=True)
+    
+    class Meta:
+        db_table = 'merchant'
+        
+
+class MerchantKey(models.Model):
+    mobile = models.TextField(null=True, blank=True)
+    live_key = models.TextField(null=True, blank=True)
+    test_key = models.TextField(null=True, blank=True)
+    
+    class Meta:
+        db_table = 'merchant_key'
+        
 class Banks(models.Model):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=20)
