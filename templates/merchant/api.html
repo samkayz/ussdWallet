@@ -50,7 +50,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-themecolor">Business Settings</h3>
+                    <h3 class="text-themecolor">API Settings</h3>
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -69,28 +69,23 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="form" method="POST" action="/merchant/business_settings">
+                                <form class="form" method="POST" action="/merchant/api_settings">
                                     {% csrf_token %}
                                     <div class="form-group m-t-40 row">
-                                        <label for="example-text-input" class="col-2 col-form-label">Business Name</label>
+                                        <label for="example-text-input" class="col-2 col-form-label">Live API Key</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" name="bus_name" value="{{alld.bus_name}}" id="example-text-input">
+                                            <input class="form-control" type="text" value="{{api.live_key}}" id="example-text-input" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group m-t-40 row">
-                                        <label for="example-text-input" class="col-2 col-form-label">Business Address</label>
+                                        <label for="example-text-input" class="col-2 col-form-label">Test API Key</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" name="bus_address" value="{{alld.bus_address}}" id="example-text-input">
+                                            <input class="form-control" type="text" value="{{api.test_key}}" id="example-text-input" readonly>
                                         </div>
                                     </div>
-                                    <div class="form-group m-t-40 row">
-                                        <label for="example-text-input" class="col-2 col-form-label">Callback URL</label>
-                                        <div class="col-10">
-                                            <input class="form-control" type="text" name="callbackurl" value="{{alld.callbackurl}}" id="example-text-input">
-                                        </div>
-                                    </div><br>
+                                    <br>
                                     <div class="col-lg-2 col-md-4">
-                                        <button type="submit" class="btn btn-rounded btn-block btn-info">Update</button>
+                                        <button type="submit" class="btn btn-rounded btn-block btn-info">Get New API Key</button>
                                     </div>
                                 </form>
                             </div>

@@ -1,6 +1,7 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
-{% include 'web/head.html' %}
+{% include 'merchant/head.html' %}
 
 <body class="fix-header card-no-border">
     <!-- ============================================================== -->
@@ -17,14 +18,14 @@
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        {% include 'web/header.html' %}
+        {% include 'merchant/header.html' %}
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
         <!-- ============================================================== -->
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
-        {% include 'web/sidebar.html' %}
+        {% include 'merchant/sidebar.html' %}
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -50,47 +51,45 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">All Pins</h4>
+                                <h4 class="card-title">All Transactions</h4>
                                 <div class="table-responsive m-t-40">
                                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
                                                 <th>Ref ID</th>
-                                                <th>Unique ID</th>
-                                                <th>Serial NO</th>
-                                                <th>Vendor</th>
-                                                <th>Contract</th>
-                                                <th>PIN NO</th>
-                                                <th>Mobile</th>
-                                                <th>Gen Date</th>
-                                                <th>Date Used</th>
+                                                <th>Amount</th>
+                                                <th>FROM/TO</th>
+                                                <th>Date</th>
+                                                <th>Desc</th>
+                                                <th>Charge</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>Ref ID</th>
-                                                <th>Unique ID</th>
-                                                <th>Serial NO</th>
-                                                <th>Vendor</th>
-                                                <th>Contract</th>
-                                                <th>PIN NO</th>
-                                                <th>Mobile</th>
-                                                <th>Gen Date</th>
-                                                <th>Date Used</th>
+                                                <th>Amount</th>
+                                                <th>FROM/TO</th>
+                                                <th>Date</th>
+                                                <th>Desc</th>
+                                                <th>Charge</th>
+                                                <th>Status</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                         {% for data in show %}
                                             <tr>
-                                                <td>{{data.refid}}</td>
-                                                <td>{{data.uniqueid}}</td>
-                                                <td>{{data.serialno}}</td>
-                                                <td>{{data.gen_by}}</td>
-                                                <td>{{data.contract}}</td>
-                                                <td>{{data.pin_no}}</td>
-                                                <td>{{data.mobile}}</td>
-                                                <td>{{data.gen_date}}</td>
-                                                <td>{{data.used_date}}</td>
+                                                <td>{{data.ref}}</td>
+                                                <td>{{data.amount|intcomma}}</td>
+                                                {% if user.mobile == data.rmobile %}
+                                                    <td>FROM {{data.rmobile}}</td>
+                                                {% else %}
+                                                    <td>TO {{data.mobile}}</td>
+                                                {% endif %}
+                                                <td>{{data.date}}</td>
+                                                <td>{{data.desc}}</td>
+                                                <td>{{data.fee}}</td>
+                                                <td>{{data.status}}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -110,7 +109,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            {% include 'footer.html' %}
+            {% include 'merchant/footer.html' %}
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -125,6 +124,6 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    {% include 'web/foot.html' %}
+    {% include 'merchant/foot.html' %}
 </body>
 </html>

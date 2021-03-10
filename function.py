@@ -176,3 +176,24 @@ class Main:
         msg = f'Hi {mobile}, \n Here is your electricity token\n\n{token} \n\nThank you!'
         send_sms.SendSMS(mobile, msg)
         pass
+    
+    
+    def GetLog(self, request):
+        mobile = request.user.mobile
+        show = Log.objects.filter(Q(mobile=mobile) | Q(rmobile=mobile))
+        return show
+    
+    def BusinessDone(self, request):
+        mobile = request.user.mobile
+        done = Merchant.objects.values('done').get(mobile=mobile)['done']
+        return done
+    
+    def GetBusinessDetails(self, request):
+        mobile = request.user.mobile
+        allbd = Merchant.objects.all().get(mobile=mobile)
+        return allbd
+    
+    def GetAPIDetails(self, request):
+        mobile = request.user.mobile
+        api = MerchantKey.objects.all().get(mobile=mobile)
+        return api
