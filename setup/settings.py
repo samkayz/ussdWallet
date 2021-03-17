@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'web',
     'api',
     'merchant',
+    'pay',
 ]
 
 AUTH_USER_MODEL = 'web.User'

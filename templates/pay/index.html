@@ -1,0 +1,60 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Payment Checkout Form</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css">
+	<link rel="stylesheet" href="{% static 'pay/styles.css'%}">
+
+</head>
+<body>
+  <div class="wrapper">
+    <div class="payment">
+      <div class="payment-logo">
+        <p>p</p>
+      </div>
+      <h2>{{merch_name|upper}}</h2>
+      <h3>₦ {{amount|intcomma}}</h3>
+      <form>
+        <div class="form">
+          <div class="card space icon-relative">
+            <label class="label">Enter Payment Code:</label><br>
+            <h2>{{paycode}}</h2>
+            {% comment %} <input type="text" class="input" placeholder="Payment Code" maxlength="6">
+            <i class="fas fa-user-secret"></i> {% endcomment %}
+          </div>
+          <div class="timer" onload="timer(1800)">
+            <div class="time">
+              <strong>Time left: <span id="time">Loading...</span></strong>
+            </div>
+          </div>
+          {% comment %} <button class="btn" type="submit">Confirm</button> {% endcomment %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+  <script type="text/javascript">
+    var time = 10 * {{timelefts}};
+    setInterval(function() {
+      var seconds = time % 60;
+      var minutes = (time - seconds) / 60;
+      if (seconds.toString().length == 1) {
+        seconds = "0" + seconds;
+      }
+      if (minutes.toString().length == 1) {
+        minutes = "0" + minutes;
+      }
+      document.getElementById("time").innerHTML = minutes + ":" + seconds;
+      time--;
+      if (time == 0) {
+        window.location.href = "exit.php";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

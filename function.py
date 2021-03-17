@@ -197,3 +197,8 @@ class Main:
         mobile = request.user.mobile
         api = MerchantKey.objects.all().get(mobile=mobile)
         return api
+    
+    def GetMerchantName(self, apikey):
+        merch_number = MerchantKey.objects.values('mobile').get(Q(live_key=apikey) | Q(test_key=apikey))['mobile']
+        merch_name = Merchant.objects.values('bus_name').get(mobile=merch_number)['bus_name']
+        return merch_name

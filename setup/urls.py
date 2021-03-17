@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('web/', include('web.urls')),
     path('merchant/', include('merchant.urls')),
+    path('pay/v1/', include('pay.urls')),
     path('confirm', views.confirm, name='confirm'),
     path('', views.index, name='index'),
     path('landing', views.landing, name='landing'),
