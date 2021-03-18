@@ -546,7 +546,7 @@ def buypower(request, mobile):
     pin = request.data.get('pin')
     amt = (float(amount) + charge)
     checkPin = MyClass.CheckPin(mobile, pin)
-    if User.objects.filter(mobile=mobile).exists() == False:
+    if MyClass.CheckLoginUser(mobile) == False:
         data = {
             "code": status.HTTP_400_BAD_REQUEST,
             "status": "fail",
@@ -614,4 +614,85 @@ def buypower(request, mobile):
         }
         return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
-            
+
+@api_view(['POST'])
+@permission_classes([])
+def webpay(request, mobile):
+    U = 6
+    res = ''.join(random.choices(string.digits, k=U))
+    txn = str(res)
+    txt_id = "TX" + txn
+    base_date_time = datetime.now()
+    now = (datetime.strftime(base_date_time, "%Y-%m-%d %H:%M %p"))
+    paycode = request.data.get('payCode')
+    pin = request.data.get('pin')
+    checkPin = MyClass.CheckPin(mobile, pin)
+    if MyClass.CheckLoginUser(mobile) == False:
+        data = {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "status": "fail",
+            "reason": "Account doestn't exist within the system"
+        }
+        return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    elif MyClass.CheckPayCode(paycode) == False:
+        data = {
+            "code": status.HTTP_400_BAD_REQUEST,
+            "status": "fail",
+            "reason": "Pay Code Invalid"
+        }
+        return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        if checkPin == True:
+            pay_details = PayToken.objects.all().get(paycode=paycode)
+            amt = pay_details.amount
+            apikey = pay_details.apikey
+            desc = pay_details.desc
+            checkbal = MyClass.CheckBal(mobile, amt)
+        
+            if pay_details.status == True and pay_details.paid == False:
+                data = {
+                    "code": status.HTTP_400_BAD_REQUEST,
+                    "status": "fail",
+                    "reason": "Pay Code Expired"
+                }
+                return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+        
+            elif pay_details.status == True and pay_details.paid == True:
+                data = {
+                    "code": status.HTTP_400_BAD_REQUEST,
+                    "status": "fail",
+                    "reason": "Pay Code Used"
+                }
+                return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                if checkbal == True:
+                    vend_mobile = MerchantKey.objects.values('mobile').get(Q(live_key=apikey) | Q(test_key=apikey))['mobile']
+                    amts = float(amt)
+                    fee = 0
+                    stat = 'PAID'
+                    p_desc = f'WebPay/{paycode}/{desc}'
+                    MyClass.SendMoney(amt, mobile, vend_mobile)
+                    # MyClass.DebitSMS(mobile, vend_mobile, amts, txt_id)
+                    MyClass.CreateLog(mobile, vend_mobile, txt_id, amts, now, stat, p_desc, fee)
+                    MyClass.UpdatePaymentToken(paycode)
+                    data = {
+                        "code": status.HTTP_200_OK,
+                        "status": "success",
+                        "reason": f'{paycode} Webpayment Successfull'
+                    }
+                    return Response(data=data, status=status.HTTP_200_OK)
+                else:
+                    data = {
+                        "code": status.HTTP_400_BAD_REQUEST,
+                        "status": "fail",
+                        "reason": "Insufficient Balance"
+                    }
+                    return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+                
+        else:
+            data = {
+                "code": status.HTTP_400_BAD_REQUEST,
+                "status": "fail",
+                "reason": "Invalid PIN"
+            }
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)

@@ -22,4 +22,5 @@ urlpatterns = [
     path('tvPay/<mobile>', views.tvPay, name='tvPay'),
     path('verifyPower', views.verifyPower, name='verifyPower'),
     path('buypower/<mobile>', views.buypower, name='buypower'),
+    path('webpay/<mobile>', views.webpay, name='webpay'),
 ]

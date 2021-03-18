@@ -15,18 +15,14 @@
       <div class="payment-logo">
         <p>p</p>
       </div>
-      <h2>{{merch_name|upper}}</h2>
-      <h3>₦ {{amount|intcomma}}</h3>
+      <h3>Status</h3>
       <form>
         <div class="form">
           <div class="card space icon-relative">
-            <label class="label">Enter Payment Code:</label><br>
-            <h2>{{paycode}}</h2>
+            {% comment %} <label class="label">Enter Payment Code:</label><br> {% endcomment %}
+            <h2>{{msg}}</h2>
             {% comment %} <input type="text" class="input" placeholder="Payment Code" maxlength="6">
             <i class="fas fa-user-secret"></i> {% endcomment %}
-          </div>
-          <div class="timer">
-            <strong>Time left: <span id="time"></span></strong>
           </div>
           {% comment %} <button class="btn" type="submit">Confirm</button> {% endcomment %}
         </div>
@@ -36,31 +32,5 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-  <script type="text/javascript">
-    var time = 10 * {{timelefts}};
-    setInterval(function() {
-      var seconds = time % 60;
-      var minutes = (time - seconds) / 60;
-      if (seconds.toString().length == 1) {
-        seconds = "0" + seconds;
-      }
-      if (minutes.toString().length == 1) {
-        minutes = "0" + minutes;
-      }
-      document.getElementById("time").innerHTML = minutes + ":" + seconds;
-      time--;
-      if (time == 0) {
-        window.location.href = "/final";
-      }
-    }, 1000);
-  </script>
-
-<script type="text/javascript">
-  $(document).ready(function () {
-    setTimeout(function () {
-      window.location = '/pay/v1/final/{{tok}}';
-    }, 7000);
-  });
-</script>
 </body>
 </html>

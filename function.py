@@ -1,3 +1,4 @@
+from pay.models import PayToken
 from django.dispatch.dispatcher import receiver
 from web.models import *
 from django.db.models import Q
@@ -202,3 +203,21 @@ class Main:
         merch_number = MerchantKey.objects.values('mobile').get(Q(live_key=apikey) | Q(test_key=apikey))['mobile']
         merch_name = Merchant.objects.values('bus_name').get(mobile=merch_number)['bus_name']
         return merch_name
+    
+    def CheckPayCode(self, paycode):
+        if PayToken.objects.filter(paycode=paycode).exists():
+            return True
+        else:
+            return False
+        
+    def CheckLoginUser(self, mobile):
+        if User.objects.filter(mobile=mobile).exists():
+            return True
+        else:
+            return False
+        
+    
+    def UpdatePaymentToken(self, paycode):
+        token_update = PayToken.objects.filter(paycode=paycode)
+        token_update.update(status=True, paid=True)
+        pass

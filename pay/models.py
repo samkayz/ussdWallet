@@ -9,6 +9,7 @@ class PayToken(models.Model):
     apikey = models.TextField(null=True,blank=True)
     desc = models.TextField(null=True,blank=True)
     status = models.BooleanField(default=False)
+    paid =  models.BooleanField(default=False)
     datetime = models.DateTimeField(auto_now=True)
     
     class Meta:

@@ -82,9 +82,9 @@
                                                 <td>{{data.ref}}</td>
                                                 <td>{{data.amount|intcomma}}</td>
                                                 {% if user.mobile == data.rmobile %}
-                                                    <td>FROM {{data.rmobile}}</td>
+                                                    <td>FROM {{data.mobile}}</td>
                                                 {% else %}
-                                                    <td>TO {{data.mobile}}</td>
+                                                    <td>TO {{data.rmobile}}</td>
                                                 {% endif %}
                                                 <td>{{data.date}}</td>
                                                 <td>{{data.desc}}</td>
