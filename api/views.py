@@ -680,6 +680,20 @@ def webpay(request, mobile):
                         "status": "success",
                         "reason": f'{paycode} Webpayment Successfull'
                     }
+                    callback_data = {
+                        'code': status.HTTP_200_OK,
+                        'amount': amts,
+                        'paymentStatus': stat,
+                        'senderMobile': mobile,
+                        'receiverMobile': vend_mobile,
+                        'TxnRef': txt_id,
+                        'TxnDate': now,
+                        'desc': p_desc,
+                        'charges': fee
+                    }
+                    callback = 'https://webhook.site/0b190bba-9e80-45c6-b4b8-7d29592598c4'
+                    resp = MyClass.Notification(callback, callback_data)
+                    print(resp)
                     return Response(data=data, status=status.HTTP_200_OK)
                 else:
                     data = {

@@ -47,7 +47,7 @@ class Main:
             wal.save()
             pin.save()
             msg = f'Welcome {mobile}, \n\n Your Registration was successful.\n ACCNO: {accountNumber}\n Bank: {bankName}\n PIN: {pwd}\n\n. Thank you.'
-            send_sms.SendSMS(mobile, msg)
+            # send_sms.SendSMS(mobile, msg)
             pass
 
         else:
@@ -221,3 +221,7 @@ class Main:
         token_update = PayToken.objects.filter(paycode=paycode)
         token_update.update(status=True, paid=True)
         pass
+
+    def Notification(self, callback, callback_data):
+        response = requests.post(callback, json=callback_data)
+        return response

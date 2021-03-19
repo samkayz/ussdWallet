@@ -26,7 +26,7 @@
             <i class="fas fa-user-secret"></i> {% endcomment %}
           </div>
           <div class="timer">
-            <strong>Time left: <span id="time"></span></strong>
+            <strong><span id="time"></span></strong>
           </div>
           {% comment %} <button class="btn" type="submit">Confirm</button> {% endcomment %}
         </div>
@@ -59,7 +59,7 @@
   $(document).ready(function () {
     setTimeout(function () {
       window.location = '/pay/v1/final/{{tok}}';
-    }, 7000);
+    }, 15000);
   });
 </script>
 </body>

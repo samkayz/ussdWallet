@@ -20,12 +20,15 @@ from . models import *
 from function import *
 funct = Main()
 from random import randint
+import requests
+from asgiref.sync import sync_to_async
 
 refid = uuid.uuid4().hex
-P = 6
-paycode = ''.join(random.choices(string.digits, k=P))
 
 def save_token(amount, apikey, desc):
+    
+    P = 6
+    paycode = ''.join(random.choices(string.digits, k=P))
     tok = PayToken(paycode=paycode, token=refid, amount=amount, apikey=apikey, desc=desc)
     tok.save()
     pass
@@ -38,8 +41,12 @@ def initiate(request):
         apikey = request.POST['apikey']
         amount = request.POST['amount']
         desc = request.POST['desc']
-        save_token(amount, apikey, desc)
-        return redirect(f'final/{refid}')
+        if MerchantKey.objects.filter(Q(live_key=apikey) | Q(test_key=apikey)).exists():
+            save_token(amount, apikey, desc)
+            return redirect(f'final/{refid}')
+        else:
+            msg = "Invalid API Key"
+            return render(request, 'pay/response.html', {'msg':msg})
 
 
 def final(request, token):
