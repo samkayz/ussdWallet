@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login - Payflat </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'home/images/favicon.png'%}">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{% static 'home/vendor/waves/waves.min.css'%}">
+    <script src="{% static 'merchant/jquery-1.9.1.min.js'%}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'merchant/css/toastr.css' %}" media="all">
+    <script type="text/javascript" src="{% static 'merchant/js/toastr.min.js' %}"></script>  
+    <link rel="stylesheet" href="{% static 'home/vendor/owlcarousel/css/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'home/css/style.css'%}">
+</head>
+
+<body>
+
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <nav class="navbar navbar-expand-lg navbar-light px-0 justify-content-between">
+                            <a class="navbar-brand" href="/"><img src="{% static 'home/images/w_logo.png'%}" alt="">
+                                <span>Payflat</span></a>
+
+                            <div class="dashboard_log">
+                                <div class="d-flex align-items-center">
+                                    <div class="header_auth">
+                                        <a href="/login" class="btn btn-success  mx-2">Sign In</a>
+                                        <a href="/signup" class="btn btn-outline-primary  mx-2">Sign Up</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success'%}
+                    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+                {% elif message.tags == 'info' %}
+                    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+                {% elif message.tags == 'warning' %}
+                    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+                {% elif message.tags == 'error' %}
+                    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="authincation section-padding">
+            <div class="container h-100">
+                <div class="row justify-content-center h-100 align-items-center">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="auth-form card">
+                            <div class="card-header justify-content-center">
+                                <h4 class="card-title">Sign in</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" name="myform" class="signin_validate" action="/login">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Mobile Number</label>
+                                        <input type="text" class="form-control" placeholder="Mobile Number" name="mobile" maxlength="11" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Login PIN</label>
+                                        <input type="password" class="form-control" name="password" placeholder="Login Pin (Max 4)" maxlength="4" required>
+                                    </div>
+                                    <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                        <div class="form-group mb-0">
+                                            <label class="toggle">
+                                                <input class="toggle-checkbox" type="checkbox">
+                                                <div class="toggle-switch"></div>
+                                                <span class="toggle-label">Remember me</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <a href="reset.html">Forgot Password?</a>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success btn-block">Sign in</button>
+                                    </div>
+                                </form>
+                                <div class="new-account mt-3">
+                                    <p>Don't have an account? <a class="text-primary" href="/signup">Sign
+                                            up</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-md-6">
+                        <div class="footer-link text-left">
+                            <a href="#" class="m_logo"><img src="images/w_logo.png" alt=""></a>
+                            <a href="about.html">About</a>
+                            <a href="privacy-policy.html">Privacy Policy</a>
+                            <a href="term-condition.html">Term & Service</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6 text-lg-right text-center">
+                        <div class="social">
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-xl-12 text-center text-lg-right">
+                        <div class="copy_right text-center text-lg-center">
+                            Copyright &copy; {% now "Y" %} Payflat. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg_icons"></div>
+
+
+    <script src="{% static 'home/vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'home/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'home/vendor/waves/waves.min.js'%}"></script>
+
+    <script src="{% static 'home/vendor/validator/jquery.validate.js'%}"></script>
+    <script src="{% static 'home/vendor/validator/validator-init.js'%}"></script>
+
+    <script src="{% static 'home/js/scripts.js'%}"></script>
+</body>
+</html>

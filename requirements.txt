@@ -14,6 +14,7 @@ djangorestframework-simplejwt==4.6.0
 idna==2.10
 kombu==4.6.11
 mysqlclient==2.0.3
+nigeria-bank-algos==0.1.1
 prompt-toolkit==3.0.17
 PyJWT==2.0.1
 pytz==2020.5

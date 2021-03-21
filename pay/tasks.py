@@ -13,7 +13,4 @@ from datetime import timedelta
 @periodic_task(run_every=timedelta(seconds=5))
 def Hello():
     print("Good Afternoon")
-    pass
-
-   
-   
+    pass    

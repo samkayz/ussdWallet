@@ -92,6 +92,7 @@ class Log(models.Model):
     mobile = models.TextField(null=True, blank=True)
     rmobile = models.TextField(null=True, blank=True)
     ref = models.TextField(null=True, blank=True)
+    txntype = models.TextField(null=True, blank=True)
     amount = models.TextField(null=True, blank=True)
     date = models.TextField(null=True, blank=True)
     status = models.TextField(null=True, blank=True)

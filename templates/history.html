@@ -1,0 +1,108 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'head.html' %}
+
+<body class="dashboard">
+
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+
+        {% include 'header.html' %}
+
+        {% include 'welcome.html' %}
+
+        <div class="history mb-80">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <h4 class="card-title">Transaction History</h4>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="transaction-table">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-responsive-sm">
+                                            <tbody>
+                                            {% for data in show %}
+                                                <tr>
+                                                    {% if user.mobile == data.mobile %}
+                                                        <td><span class="sold-thumb"><i class="la la-arrow-up"></i></span></td>
+
+                                                        <td>
+                                                            <span class="badge badge-danger">Sent</span>
+                                                        </td>
+                                                    {% else %}
+                                                        <td><span class="buy-thumb"><i class="la la-arrow-down"></i></span></td>
+                                                        <td>
+                                                            <span class="badge badge-success">Recieved</span>
+                                                        </td>
+                                                    {% endif %}
+                                                    <td>
+                                                        <i class="fa fa-credit-card"></i> {{data.txntype|upper}}
+                                                    </td>
+                                                    {% if user.mobile == data.mobile %}
+                                                        <td>TO - {{data.rmobile}}</td>
+                                                    {% else %}
+                                                        <td>FROM - {{data.mobile}}</td>
+                                                    {% endif %}
+                                                    <td>{{data.date}}</td>
+                                                    <td>{{data.ref}}</td>
+                                                    {% if user.mobile == data.mobile %}
+                                                        <td class="text-danger">₦ {{data.amount|intcomma}}</td>
+                                                    {% else %}
+                                                        <td class="text-success">₦ {{data.amount|intcomma}}</td>
+                                                    {% endif %}
+                                                    <td>₦ {{data.fee|intcomma}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <ul class="pagination justify-content-center mt-4 mb-0">
+                                        {% if show.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1" tabindex="-1">FIRST</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ show.previous_page_number }}" tabindex="-1">PREV </a>
+                                            </li>
+                                        {% endif %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">
+                                                    Page {{ show.number }} of {{ show.paginator.num_pages }}.
+                                                </a>
+                                            </li>
+                                        {% if show.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ show.next_page_number }}">NEXT</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="?page={{ show.paginator.num_pages }}">LAST</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        {% include 'footer.html' %}
+    </div>
+
+    {% include 'foot.html' %}
+</body>
+
+</html>

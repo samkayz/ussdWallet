@@ -87,8 +87,8 @@ class Main:
         return bal
 
 
-    def CreateLog(self, mobile, rmobile, ref, amount, date, status, desc, fee):
-        clog = Log(mobile=mobile, rmobile=rmobile, ref=ref, amount=amount, date=date, status=status, desc=desc, fee=fee)
+    def CreateLog(self, mobile, rmobile, ref, txntype, amount, date, status, desc, fee):
+        clog = Log(mobile=mobile, rmobile=rmobile, ref=ref, txntype=txntype, amount=amount, date=date, status=status, desc=desc, fee=fee)
         clog.save()
         pass
 

@@ -1,0 +1,190 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+
+<body class="dashboard">
+
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+
+        {% include 'header.html' %}
+
+        {% include 'welcome.html' %}
+
+        <div class="homepage mb-80">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="card profile_chart">
+                            <div class="card-header">
+                                <div class="chart_current_data">
+                                    <h3>254856 <span>NGN</span></h3>
+                                    <p class="text-success">125648 <span>NGN (20%)</span></p>
+                                </div>
+                                <div class="duration-option">
+                                    <a id="all" class="active">ALL</a>
+                                    <a id="one_month" class="">1M</a>
+                                    <a id="six_months">6M</a>
+                                    <a id="one_year" class="">1Y</a>
+                                    <a id="ytd" class="">YTD</a>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+
+                                <div id="timeline-chart"></div>
+                                <div class="chart-content text-center">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-sm-6 col-6">
+                                            <p class="mb-1">24hr Volume</p>
+                                            <h5>NGN 1236548.325</h5>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-6 col-6">
+                                            <p class="mb-1">Market Cap</p>
+                                            <h5>19B NGN</h5>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-6 col-6">
+                                            <p class="mb-1">Circulating Supply</p>
+                                            <h5>29.4M NGN</h5>
+                                        </div>
+                                        <div class="col-xl-3 col-sm-6 col-6">
+                                            <p class="mb-1">All Time High</p>
+                                            <h5>19.783.06 NGN</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="card balance-widget">
+                            <div class="card-header pb-0 border-0">
+                                <h4 class="card-title">Your Portfolio </h4>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="balance-widget">
+                                    <div class="total-balance">
+                                        <h3>₦ {{user_wallet.bal|intcomma}}</h3>
+                                        <h6>Total Balance</h6>
+                                    </div>
+                                    <ul class="list-unstyled">
+                                        <li class="media">
+                                            <i class="la la-user"></i>
+                                            <div class="media-body">
+                                                <h5 class="m-0">ACCOUNT NO</h6>
+                                            </div>
+                                            <div class="text-right">
+                                                <h5>{{user_wallet.acctno}}</h5>
+                                            </div>
+                                        </li>
+                                        <li class="media">
+                                            <i class="fa fa-bank"></i>
+                                            <div class="media-body">
+                                                <h5 class="m-0"> BANK NAME</h6>
+                                            </div>
+                                            <div class="text-right">
+                                                <h5>{{user_wallet.bank|upper}}</h5>
+                                            </div>
+                                        </li>
+                                        <li class="media">
+                                            <i class="fa fa-credit-card"></i>
+                                            <div class="media-body">
+                                                <h5 class="m-0">WALLET ID</h6>
+                                            </div>
+                                            <div class="text-right">
+                                                <h5>{{user_wallet.mobile}}<h5>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-9 col-lg-9">
+                        <div class="card">
+                            <div class="card-header border-0 pb-0">
+                                <h4 class="card-title">Recent Activities</h4>
+                                <a href="#">View More </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="transaction-table">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-responsive-sm">
+                                            <tbody>
+                                            {% for data in show %}
+                                                <tr>
+                                                    {% if user.mobile == data.mobile %}
+                                                        <td><span class="sold-thumb"><i class="la la-arrow-up"></i></span></td>
+
+                                                        <td>
+                                                            <span class="badge badge-danger">Sent</span>
+                                                        </td>
+                                                    {% else %}
+                                                        <td><span class="buy-thumb"><i class="la la-arrow-down"></i></span></td>
+                                                        <td>
+                                                            <span class="badge badge-success">Recieved</span>
+                                                        </td>
+                                                    {% endif %}
+                                                    <td>
+                                                        <i class="fa fa-credit-card"></i> {{data.txntype|upper}}
+                                                    </td>
+                                                    {% if user.mobile == data.mobile %}
+                                                        <td>TO - {{data.rmobile}}</td>
+                                                    {% else %}
+                                                        <td>FROM - {{data.mobile}}</td>
+                                                    {% endif %}
+                                                    <td>{{data.date}}</td>
+                                                    <td>{{data.ref}}</td>
+                                                    {% if user.mobile == data.mobile %}
+                                                        <td class="text-danger">₦ {{data.amount|intcomma}}</td>
+                                                    {% else %}
+                                                        <td class="text-success">₦ {{data.amount|intcomma}}</td>
+                                                    {% endif %}
+                                                    <td>₦ {{data.fee|intcomma}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3">
+                        <div class="card apps-download">
+                            <div class="card-body">
+                                <h4 class="card-title">Mobile app</h4>
+                                <div class="apps-download-content">
+                                    <h3>Get the best mobile app to exchange or buy crypto on the go:</h3>
+                                    <div class="mt-4 text-center">
+                                        <a href="#" class="btn btn-primary my-1"><img src="{% static 'home/images/android.svg'%}"
+                                                alt=""></a>
+                                        <a href="#" class="btn btn-success my-1"><img src="{% static 'home/images/apple.svg'%}"
+                                                alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        {% include 'footer.html' %}
+
+    </div>
+   {% include 'foot.html' %}
+</body>
+</html>

@@ -3,13 +3,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model, authenticate, login as dj_login, logout as s_logout
 from django.contrib.auth import user_logged_in
 from django.dispatch.dispatcher import receiver
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from api.models import *
 from web.models import *
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.paginator import Paginator
 from setup.settings import EMAIL_FROM
 from django.db.models import Sum
 import random
@@ -29,11 +30,18 @@ from django.http import JsonResponse
 User = get_user_model()
 from function import *
 from .user_function import *
+from bank.getbanks import *
+from monify import *
+bnk = GetBank()
 func = Main()
 NewFunt = Main()
+moni = Monnify()
 
 
 
+
+def user_required(login_url=None):
+    return user_passes_test(lambda u: u.is_user, login_url=login_url)
 
 
 @require_POST
@@ -59,9 +67,6 @@ def index(request):
     return render(request, 'index.html')
 
 
-def landing(request):
-    return render(request, 'mobile/landing.html')
-
 def login(request):
     if request.method == 'POST':
         mobile = request.POST['mobile']
@@ -69,17 +74,95 @@ def login(request):
         resp = func.UserLogin(request, mobile, password)
         return resp
     else:
-        return render(request, 'mobile/login.html')
+        return render(request, 'signin.html')
 
 def signup(request):
-    return render(request, 'mobile/signup.html')
+    return render(request, 'signup.html')
 
 
-@login_required(login_url='/login')
+@user_required(login_url='/login')
 def home(request):
     mobile = request.user.mobile
     user_wallet = func.ShowUserWallet(mobile)
-    return render(request, 'mobile/home.html',{'user_wallet':user_wallet})
+    show = func.ShowUserLog(mobile).order_by('-id')[:5]
+    return render(request, 'home.html',{'user_wallet':user_wallet, 'show':show})
+
+
+@user_required(login_url='/login')
+def sendmoney(request):
+    mobile = request.user.mobile
+    user_wallet = func.ShowUserWallet(mobile)
+    if request.method == "POST":
+        acctno = request.POST['acctno']
+        data = bnk.GetLikeBank(accountNumber=acctno)
+        # print(data)
+        return JsonResponse(data, safe=False)
+    return render(request, 'sendmoney.html',{'user_wallet':user_wallet})
+
+
+@user_required(login_url='/login')
+def history(request):
+    mobile = request.user.mobile
+    user_wallet = func.ShowUserWallet(mobile)
+    show = func.ShowUserLog(mobile).order_by('-id')
+    paginator = Paginator(show, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'history.html',{'user_wallet':user_wallet, 'show':page_obj})
+
+
+@user_required(login_url='/login')
+def settings(request):
+    mobile = request.user.mobile
+    user_wallet = func.ShowUserWallet(mobile)
+    return render(request, 'settings.html',{'user_wallet':user_wallet})
+
+
+@user_required(login_url='/login')
+def bankverify(request):
+    if request.method == "POST":
+        banks = request.POST['banks']
+        acctno = request.POST['acctno']
+        bankinfo = moni.VerifyAccount(acctno, banks)
+        acctNo = bankinfo['responseBody']['accountNumber']
+        acctName = bankinfo['responseBody']['accountName']
+        data = {
+            "fullname": acctName,
+            "acctNos": acctNo,
+            "fee": f'₦ {30.0}'
+            }
+        return JsonResponse(data)
+
+
+@user_required(login_url='/login')
+def walletverify(request):
+    user_mobile = request.user.mobile
+    if request.method == "POST":
+        mobile = request.POST['mobile']
+        try:
+            alluser = User.objects.all().get(mobile=mobile)
+            if alluser.mobile == user_mobile:
+                data = {
+                    "fullname": "You can't send money to yourself",
+                    "acctNos": mobile,
+                    "fee": f'₦ {0.0}'
+                    }
+                return JsonResponse(data)
+            else:
+                data = {
+                    "fullname": alluser.fullname,
+                    "acctNos": mobile,
+                    "fee": f'₦ {0.0}'
+                    }
+                return JsonResponse(data)
+        except:
+            data = {
+                    "fullname": "Wrong Wallet ID",
+                    "acctNos": mobile,
+                    "fee": f'₦ {0.0}'
+                    }
+            return JsonResponse(data)
+
 
 
 def logout(request):

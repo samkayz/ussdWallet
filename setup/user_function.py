@@ -47,7 +47,7 @@ class Main:
                 messages.error(request, 'Invalid Credentials')
                 return redirect('/login')
         else:
-            messages.error(request, "User does not exist. SignUp here " + f'http://{url}/signup')
+            messages.error(request, "User does not exist")
             return redirect('/login')
 
     def UserLogout(self, request):
@@ -60,3 +60,8 @@ class Main:
     def ShowUserWallet(self, mobile):
         user_wallet = Wallet.objects.all().get(mobile=mobile)
         return user_wallet
+
+    
+    def ShowUserLog(self, mobile):
+        show = Log.objects.filter(Q(mobile=mobile) | Q(rmobile=mobile))
+        return show

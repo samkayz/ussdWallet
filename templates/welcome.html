@@ -1,0 +1,18 @@
+{% load static %}
+<div class="page_title section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="page_title-content">
+                            <p>Welcome Back,
+                            {% if user.fullname == None %}
+                                <span> {{user.mobile}}</span>
+                            {% else %}
+                                <span> {{user.fullname}}</span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

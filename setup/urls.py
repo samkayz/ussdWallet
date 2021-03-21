@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from setup import settings
 from merchant import urls
 from django.urls import path, include
 from . import views
@@ -24,9 +25,13 @@ urlpatterns = [
     path('pay/v1/', include('pay.urls')),
     path('confirm', views.confirm, name='confirm'),
     path('', views.index, name='index'),
-    path('landing', views.landing, name='landing'),
     path('login', views.login, name='login'),
     path('signup', views.signup, name='signup'),
     path('home', views.home, name='home'),
     path('logout', views.logout, name='logout'),
+    path('sendmoney', views.sendmoney, name='sendmoney'),
+    path('history', views.history, name='history'),
+    path('settings', views.settings, name='settings'),
+    path('bankverify', views.bankverify, name='bankverify'),
+    path('walletverify', views.walletverify, name='walletverify'),
 ]

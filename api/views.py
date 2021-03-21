@@ -127,11 +127,12 @@ def transfer(request, mobile):
                     }
                     return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
                 else:
+                    txntype = "Wallet"
                     amt = float(amount)
                     MyClass.SendMoney(amount, mobile, rec)
                     MyClass.DebitSMS(mobile, rec, amt, txt_id)
                     MyClass.CreditSMS(mobile, rec, amt, txt_id)
-                    MyClass.CreateLog(mobile, rec, txt_id, amt, now, status="PAID", desc="Wallet Transfer", fee=0)
+                    MyClass.CreateLog(mobile, rec, txt_id, txntype, amt, now, status="PAID", desc="Wallet Transfer", fee=0)
                     data = {
                         "code": status.HTTP_200_OK,
                         "status": "success",
@@ -231,9 +232,10 @@ def btranfer(request, mobile):
                 body = trans['responseBody']
                 fee = float(body['totalFee'])
                 amt = (fee + float(amount))
+                txntype = "Bank"
                 MyClass.BankTransfer(mobile, amt)
                 MyClass.DebitSMS(mobile, rec, amount, txt_id)
-                MyClass.CreateLog(mobile, rec, txt_id, amount, now, stat, desc, fee)
+                MyClass.CreateLog(mobile, rec, txt_id, txntype, amount, now, stat, desc, fee)
                 data = {
                     "code": status.HTTP_200_OK,
                     "status": "sucess",
@@ -691,7 +693,7 @@ def webpay(request, mobile):
                         'desc': p_desc,
                         'charges': fee
                     }
-                    callback = 'https://webhook.site/0b190bba-9e80-45c6-b4b8-7d29592598c4'
+                    callback = Merchant.objects.values('callbackurl').get(mobile=vend_mobile)['callbackurl']
                     resp = MyClass.Notification(callback, callback_data)
                     print(resp)
                     return Response(data=data, status=status.HTTP_200_OK)
