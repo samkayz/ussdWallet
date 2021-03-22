@@ -68,6 +68,8 @@ def index(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('/home')
     if request.method == 'POST':
         mobile = request.POST['mobile']
         password = request.POST['password']
@@ -77,6 +79,8 @@ def login(request):
         return render(request, 'signin.html')
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('/home')
     return render(request, 'signup.html')
 
 
@@ -124,14 +128,22 @@ def bankverify(request):
         banks = request.POST['banks']
         acctno = request.POST['acctno']
         bankinfo = moni.VerifyAccount(acctno, banks)
-        acctNo = bankinfo['responseBody']['accountNumber']
-        acctName = bankinfo['responseBody']['accountName']
-        data = {
-            "fullname": acctName,
-            "acctNos": acctNo,
-            "fee": f'₦ {30.0}'
-            }
-        return JsonResponse(data)
+        try:
+            acctNo = bankinfo['responseBody']['accountNumber']
+            acctName = bankinfo['responseBody']['accountName']
+            data = {
+                "fullname": acctName,
+                "acctNos": acctNo,
+                "fee": f'₦ {30.0}'
+                }
+            return JsonResponse(data)
+        except:
+            data = {
+                "fullname": "Wrong Account Number",
+                "acctNos": "Wrong Account Number",
+                "fee": f'₦ {30.0}'
+                }
+            return JsonResponse(data)
 
 
 @user_required(login_url='/login')
@@ -168,3 +180,14 @@ def walletverify(request):
 def logout(request):
     resp = func.UserLogout(request)
     return resp
+
+
+def aboutus(request):
+    return render(request, 'about.html')
+
+
+def privacy_policy(request):
+    return render(request, 'privacy-policy.html')
+
+def terms_and_condition(request):
+    return render(request, 'term-condition.html')

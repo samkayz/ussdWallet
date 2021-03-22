@@ -34,4 +34,7 @@ urlpatterns = [
     path('settings', views.settings, name='settings'),
     path('bankverify', views.bankverify, name='bankverify'),
     path('walletverify', views.walletverify, name='walletverify'),
+    path('aboutus', views.aboutus, name='aboutus'),
+    path('privacy-policy', views.privacy_policy, name='privacy-policy'),
+    path('terms-and-condition', views.terms_and_condition, name='terms-and-condition'),
 ]

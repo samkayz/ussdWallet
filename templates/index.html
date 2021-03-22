@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tradient </title>
+    <title>Payflat - Welcome to #1 Payment Platform in Nigeria </title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'home/images/favicon.png'%}">
     <!-- Custom Stylesheet -->
@@ -57,10 +57,17 @@
                             </div>
                             <div class="dashboard_log">
                                 <div class="d-flex align-items-center">
+                                {% if user.is_authenticated %}
                                     <div class="header_auth">
-                                        <a href="/login" class="btn btn-success">Sign In</a>
-                                        <a href="/signup" class="btn btn-outline-primary">Sign Up</a>
+                                        <a href="/home" class="btn btn-success  mx-2">Dashboard</a>
+                                        <a href="/logout" class="btn btn-outline-primary  mx-2">Sign Out</a>
                                     </div>
+                                {% else %}
+                                    <div class="header_auth">
+                                        <a href="/login" class="btn btn-success  mx-2">Sign In</a>
+                                        <a href="/signup" class="btn btn-outline-primary  mx-2">Sign Up</a>
+                                    </div>
+                                {% endif %}
                                 </div>
                             </div>
                         </nav>
@@ -302,48 +309,7 @@
 
 
 
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-md-6">
-                        <div class="footer-link text-left">
-                            <a href="#" class="m_logo"><img src="{% static 'home/images/w_logo.png'%}" alt=""></a>
-                            <a href="about.html">About</a>
-                            <a href="privacy-policy.html">Privacy Policy</a>
-                            <a href="term-condition.html">Term & Service</a>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-md-6 text-lg-right text-center">
-                        <div class="social">
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-xl-12 text-center text-lg-right">
-                        <div class="copy_right text-center text-lg-center">
-                            Copyright © 2019 Quixlab. All Rights Reserved.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="cookie_alert">
-
-        <div class="alert alert-light fade show">
-            <i class="la la-close" data-dismiss="alert"></i>
-            <p>
-                We use cookies to enhance your experience. By using Tradient, you agree to our <a href="#">Terms of
-                    Use</a> and <a href="#">Privacy
-                    Policy</a>
-            </p>
-            <button class="btn btn-success btn-block">Accept</button>
-        </div>
+        {% include 'lfooter.html' %}
     </div>
 
 
