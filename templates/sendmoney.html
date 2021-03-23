@@ -35,7 +35,8 @@
                                     </ul>
                                     <div class="tab-content tab-content-default">
                                         <div class="tab-pane fade show active" id="buy" role="tabpanel">
-                                            <form method="post" name="myform" class="currency_validate">
+                                            <form method="post" name="myform" id="walletpay" class="currency_validate">
+                                                {% csrf_token %}
                                                 <div class="form-group">
                                                     <label class="mr-sm-2">Wallet ID(Mobile Number)</label>
                                                     <div class="input-group mb-3">
@@ -55,10 +56,16 @@
                                                     <div class="form-group">
                                                         <label class="mr-sm-2">Payment Description</label>
                                                         <div class="input-group">
-                                                            <input type="text" name="desc" class="form-control" placeholder="Payment Description">
+                                                            <input type="text" name="desc" id="desc" class="form-control" placeholder="Payment Description">
                                                         </div>
                                                     </div>
-                                                    <button type="submit" id="submit" style="display:none;" name="submit"class="btn btn-success btn-block">COMPLETE PROCESS</button>
+                                                    <div class="form-group">
+                                                        <label class="mr-sm-2">Transaction PIN</label>
+                                                        <div class="input-group">
+                                                            <input type="text" name="pin" id="pin" class="form-control" placeholder="Transaction PIN" maxlength="4">
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" id="submit" style="display:none;" class="btn btn-success btn-block">COMPLETE PROCESS</button>
 
                                                 </form>
                                             </div>
@@ -172,7 +179,6 @@
                         }
                     </script>
 
-                    <script src="{% static 'jquery-2.2.4.min.js'%}"></script>
                     <script type="text/javascript">
                      function wloadinfo(){
                         var acctno = $("#acctno").val();
@@ -197,7 +203,6 @@
                     }
                 </script>
 
-                <script src="{% static 'jquery-2.2.4.min.js'%}"></script>
                 <script type="text/javascript">
                      function walloadinfo(){
                         var mobile = $("#mobile").val();
@@ -221,18 +226,18 @@
                     }
                      }
                 </script>
-                <script src="{% static 'jquery-2.2.4.min.js'%}"></script>
+                
                 <script type="text/javascript">
                     var bal = {{user_wallet.bal}};
+                    var ruser = {{user.mobile}};
                      $("#amount").keyup(function() {
-                        if (bal < $('#amount').val() || $('#amount').val() == '' || $('#amount').val() == '0' || $('#amount').val() < 100) 
+                        if (bal < $('#amount').val() || $('#amount').val() == '' || $('#amount').val() == '0' || $('#amount').val() < 100 || $('#mobile').val() == ruser) 
                             $("#submit").hide();
                         else 
                             $("#submit").show();
                         });
                 </script>
 
-                <script src="{% static 'jquery-2.2.4.min.js'%}"></script>
                 <script type="text/javascript">
                     var bal = {{user_wallet.bal}};
                      $("#amount2").keyup(function() {
@@ -242,6 +247,65 @@
                             $("#submit2").show();
                         });
                 </script>
+
+                <script src="{% static 'sweetalert.min.js'%}"></script>
+                <script type="text/javascript">
+                 $(document).on('submit', '#walletpay',function(e){
+                  e.preventDefault();
+                  $("#submit").attr("disabled", true);
+                  $.ajax({
+                   type:'POST',
+                   url:'/walletpay',
+                   data:{
+                    desc:$('#desc').val(),
+                    amount:$('#amount').val(),
+                    mobile:$('#mobile').val(),
+                    pin:$('#pin').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                  },
+                  success:function(data){
+                    document.getElementById("walletpay").reset();
+                    swal({
+                      title: data.reason,
+                      text: data.message,
+                      icon: "success",
+                      type: "success"
+                    }).then(function() {
+                      window.location = "/sendmoney";
+                    });
+                  },
+                  error : function(data) {
+                    document.getElementById("walletpay").reset();
+                    swal({
+                      title: "Faill",
+                      text: data.responseJSON.message,
+                      icon: "error",
+                      type: "error"
+                    }).then(function() {
+                      window.location = "/sendmoney";
+                    });
+                  }
+                });
+                });
+              </script>
+
+                {% comment %} <script>
+                    $(document).ready(function () {
+
+                        $("#formABC").submit(function (e) {
+
+                        //stop submitting the form to see the disabled button effect
+                        e.preventDefault();
+
+                        //disable the submit button
+                        $("#submit").attr("disabled", true);
+
+
+                        return true;
+
+                        });
+                    });
+                </script> {% endcomment %}
 
                 {% include 'footer.html' %}
             </div>

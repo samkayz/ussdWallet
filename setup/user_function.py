@@ -30,7 +30,7 @@ NewFunct = Main()
 
 
 
-class Main:
+class UserFunc:
     def UserLogin(self, request, mobile, password):
         url = request.get_host()
         if NewFunct.CheckUser(mobile) == True:

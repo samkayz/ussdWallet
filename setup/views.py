@@ -33,7 +33,7 @@ from .user_function import *
 from bank.getbanks import *
 from monify import *
 bnk = GetBank()
-func = Main()
+func = UserFunc()
 NewFunt = Main()
 moni = Monnify()
 
@@ -155,6 +155,7 @@ def walletverify(request):
             alluser = User.objects.all().get(mobile=mobile)
             if alluser.mobile == user_mobile:
                 data = {
+                    "avail": "false",
                     "fullname": "You can't send money to yourself",
                     "acctNos": mobile,
                     "fee": f'₦ {0.0}'
@@ -162,6 +163,7 @@ def walletverify(request):
                 return JsonResponse(data)
             else:
                 data = {
+                    "avail": "true",
                     "fullname": alluser.fullname,
                     "acctNos": mobile,
                     "fee": f'₦ {0.0}'
@@ -169,11 +171,54 @@ def walletverify(request):
                 return JsonResponse(data)
         except:
             data = {
+                    "avail": "false",
                     "fullname": "Wrong Wallet ID",
                     "acctNos": mobile,
                     "fee": f'₦ {0.0}'
                     }
             return JsonResponse(data)
+
+
+@user_required(login_url='/login')
+def walletpay(request):
+    U = 6
+    res = ''.join(random.choices(string.digits, k=U))
+    txn = str(res)
+    txt_id = "TX" + txn
+    base_date_time = datetime.now()
+    now = (datetime.strftime(base_date_time, "%Y-%m-%d %H:%M %p"))
+    SenderMobile = request.user.mobile
+    txntype = "Wallet"
+    if request.method == "POST":
+        amount = request.POST['amount']
+        desc = request.POST['desc']
+        rec_mobile = request.POST['mobile']
+        pin = request.POST['pin']
+        checkPin = NewFunt.CheckPin(SenderMobile, pin)
+        
+        if checkPin == True:
+            if NewFunt.CheckUser(rec_mobile) == True:
+                NewFunt.SendMoney(amount, SenderMobile, rec_mobile)
+                # NewFunt.DebitSMS(SenderMobile, rec_mobile, amount, txt_id)
+                # NewFunt.CreditSMS(SenderMobile, rec_mobile, amount, txt_id)
+                NewFunt.CreateLog(SenderMobile, rec_mobile, txt_id, txntype, amount, now, status="PAID", desc=desc, fee=0)
+                data = {
+                    "status": "success",
+                    "reason": f'{amount} was sent to {rec_mobile}'
+                }
+                return JsonResponse(data)
+            else:
+                data = {
+                        'message': "Receiver's Wallet not Found"
+                    }
+                response = JsonResponse(data, status=404)
+                return response
+        else:
+            data = {
+                    'message': "Invalid Transation PIN"
+                }
+            response = JsonResponse(data, status=404)
+            return response
 
 
 

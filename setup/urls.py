@@ -37,4 +37,5 @@ urlpatterns = [
     path('aboutus', views.aboutus, name='aboutus'),
     path('privacy-policy', views.privacy_policy, name='privacy-policy'),
     path('terms-and-condition', views.terms_and_condition, name='terms-and-condition'),
+    path('walletpay', views.walletpay, name='walletpay'),
 ]
