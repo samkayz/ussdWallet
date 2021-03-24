@@ -41,10 +41,10 @@ class Main:
             bankName = res[0]['bankName']
 
             user = User.objects.create_user(email="", mobile=mobile, password=pwd, is_user=True)
-            wal = Wallet(mobile=mobile, acctno=accountNumber, bank=bankName)
-            pin = Pins(mobile=mobile, pin=pwd)
+            wal = Wallet(acctno=accountNumber, bank=bankName, mobile=mobile, user=user)
             user.save()
             wal.save()
+            pin = Pins(mobile=mobile, pin=pwd, user=user)
             pin.save()
             msg = f'Welcome {mobile}, \n\n Your Registration was successful.\n ACCNO: {accountNumber}\n Bank: {bankName}\n PIN: {pwd}\n\n. Thank you.'
             # send_sms.SendSMS(mobile, msg)
@@ -64,10 +64,10 @@ class Main:
             bankName = res[0]['bankName']
 
             user = User.objects.create_user(email=email, mobile=mobile, password=pwd, is_merchant=True, fullname=fullname)
-            wal = Wallet(mobile=mobile, acctno=accountNumber, bank=bankName)
-            pin = Pins(mobile=mobile, pin=pwd)
-            merc = Merchant(mobile=mobile)
-            mercKey = MerchantKey(mobile=mobile)
+            wal = Wallet(mobile=mobile, acctno=accountNumber, bank=bankName, user=user)
+            pin = Pins(mobile=mobile, pin=pwd, user=user)
+            merc = Merchant(mobile=mobile, user=user)
+            mercKey = MerchantKey(mobile=mobile, user=user)
             merc.save()
             mercKey.save()
             user.save()

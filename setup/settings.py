@@ -70,6 +70,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGIN_URL = '/login'
+
+MERCHANT_LOGIN_URL = '/merchant/login'
+
 ROOT_URLCONF = 'setup.urls'
 
 TEMPLATES = [

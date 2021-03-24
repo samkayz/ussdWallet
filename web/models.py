@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser, UserManager, BaseUserManager
+from django.db.models.deletion import CASCADE
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -63,11 +64,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = 'user'
 
-    def get_full_name(self):
-        return self.name
-
-    def get_short_name(self):
-        return self.name
+    def __str__(self):
+        return self.mobile
 
 
 class UserSession(models.Model):
@@ -79,13 +77,17 @@ class UserSession(models.Model):
 
 
 class Wallet(models.Model):
-    mobile = models.CharField(null=True, max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    mobile = models.TextField(null=True, blank=True)
     bal = models.FloatField(default=0)
     acctno = models.TextField(null=True, blank=True)
     bank = models.TextField(null=True, blank=True)
 
     class Meta:
         db_table = 'wallet'
+        
+    def __str__(self):
+        return self.user
 
 
 class Log(models.Model):
@@ -104,6 +106,7 @@ class Log(models.Model):
 
 
 class Pins(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     mobile = models.TextField(null=True, blank=True)
     pin = models.TextField(null=True, blank=True)
 
@@ -122,6 +125,7 @@ class Utility(models.Model):
 
 
 class Merchant(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     mobile = models.TextField(null=True, blank=True)
     done = models.BooleanField(default=False)
     bus_name = models.TextField(null=True, blank=True)
@@ -133,6 +137,7 @@ class Merchant(models.Model):
         
 
 class MerchantKey(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     mobile = models.TextField(null=True, blank=True)
     live_key = models.TextField(null=True, blank=True)
     test_key = models.TextField(null=True, blank=True)

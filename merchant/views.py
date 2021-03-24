@@ -1,7 +1,7 @@
 from django.shortcuts import *
 from function import *
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required, user_passes_test
+from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from django.contrib.auth import get_user_model, authenticate, login as dj_login, logout as s_logout
 func = Main()
 User = get_user_model()
@@ -58,7 +58,7 @@ def login(request):
     else:
         return render(request, 'merchant/login.html')
     
-
+@login_required(login_url='/merchant/login?next=%s' % (settings.MERCHANT_LOGIN_URL))
 @merchant_required(login_url='/merchant/login')
 def home(request):
     mobile = request.user.mobile
@@ -94,8 +94,7 @@ def business_settings(request):
             messages.success(request, "Business Settings Updated. Kindly get Your API for Integration")
             return redirect('/merchant/api_settings')
     else:
-        alld = func.GetBusinessDetails(request)
-        return render(request, 'merchant/settings.html',{'alld':alld})
+        return render(request, 'merchant/settings.html')
 
 @merchant_required(login_url='/merchant/login')
 def api_settings(request):
@@ -111,5 +110,4 @@ def api_settings(request):
            apikey.update(live_key=api_live, test_key=api_test)
            messages.success(request, "API Successful")
            return redirect('/merchant/api_settings')   
-        api = func.GetAPIDetails(request)
-        return render(request, 'merchant/api.html', {'api':api})
+        return render(request, 'merchant/api.html')

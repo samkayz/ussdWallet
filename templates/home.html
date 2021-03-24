@@ -72,7 +72,7 @@
                             <div class="card-body pt-0">
                                 <div class="balance-widget">
                                     <div class="total-balance">
-                                        <h3>₦ {{user_wallet.bal|intcomma}}</h3>
+                                        <h3>₦ {{user.wallet.bal|intcomma}}</h3>
                                         <h6>Total Balance</h6>
                                     </div>
                                     <ul class="list-unstyled">
@@ -82,7 +82,7 @@
                                                 <h5 class="m-0">ACCOUNT NO</h6>
                                             </div>
                                             <div class="text-right">
-                                                <h5>{{user_wallet.acctno}}</h5>
+                                                <h5>{{user.wallet.acctno}}</h5>
                                             </div>
                                         </li>
                                         <li class="media">
@@ -91,7 +91,7 @@
                                                 <h5 class="m-0"> BANK NAME</h6>
                                             </div>
                                             <div class="text-right">
-                                                <h5>{{user_wallet.bank|upper}}</h5>
+                                                <h5>{{user.wallet.bank|upper}}</h5>
                                             </div>
                                         </li>
                                         <li class="media">
@@ -100,7 +100,7 @@
                                                 <h5 class="m-0">WALLET ID</h6>
                                             </div>
                                             <div class="text-right">
-                                                <h5>{{user_wallet.mobile}}<h5>
+                                                <h5>{{user.mobile}}<h5>
                                             </div>
                                         </li>
                                     </ul>

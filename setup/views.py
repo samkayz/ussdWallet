@@ -40,8 +40,9 @@ moni = Monnify()
 
 
 
-def user_required(login_url=None):
-    return user_passes_test(lambda u: u.is_user, login_url=login_url)
+def user_required(user):
+    print(user.is_user)
+    return user.is_user
 
 
 @require_POST
@@ -84,45 +85,46 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required, login_url='/logout')
 def home(request):
     mobile = request.user.mobile
-    user_wallet = func.ShowUserWallet(mobile)
     show = func.ShowUserLog(mobile).order_by('-id')[:5]
-    return render(request, 'home.html',{'user_wallet':user_wallet, 'show':show})
+    return render(request, 'home.html',{'show':show})
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required)
 def sendmoney(request):
     mobile = request.user.mobile
-    user_wallet = func.ShowUserWallet(mobile)
     if request.method == "POST":
         acctno = request.POST['acctno']
         data = bnk.GetLikeBank(accountNumber=acctno)
         # print(data)
         return JsonResponse(data, safe=False)
-    return render(request, 'sendmoney.html',{'user_wallet':user_wallet})
+    return render(request, 'sendmoney.html')
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required)
 def history(request):
     mobile = request.user.mobile
-    user_wallet = func.ShowUserWallet(mobile)
     show = func.ShowUserLog(mobile).order_by('-id')
     paginator = Paginator(show, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'history.html',{'user_wallet':user_wallet, 'show':page_obj})
+    return render(request, 'history.html',{'show':page_obj})
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required)
 def settings(request):
     mobile = request.user.mobile
-    user_wallet = func.ShowUserWallet(mobile)
-    return render(request, 'settings.html',{'user_wallet':user_wallet})
+    return render(request, 'settings.html')
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required)
 def bankverify(request):
     if request.method == "POST":
         banks = request.POST['banks']
@@ -146,7 +148,8 @@ def bankverify(request):
             return JsonResponse(data)
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required)
 def walletverify(request):
     user_mobile = request.user.mobile
     if request.method == "POST":
@@ -179,7 +182,8 @@ def walletverify(request):
             return JsonResponse(data)
 
 
-@user_required(login_url='/login')
+@login_required()
+@user_passes_test(user_required)
 def walletpay(request):
     U = 6
     res = ''.join(random.choices(string.digits, k=U))

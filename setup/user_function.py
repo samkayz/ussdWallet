@@ -57,11 +57,6 @@ class UserFunc:
         return resp
 
     
-    def ShowUserWallet(self, mobile):
-        user_wallet = Wallet.objects.all().get(mobile=mobile)
-        return user_wallet
-
-    
     def ShowUserLog(self, mobile):
         show = Log.objects.filter(Q(mobile=mobile) | Q(rmobile=mobile))
         return show
