@@ -101,10 +101,10 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'payment',
-        'USER': 'payment',
-        'PASSWORD': 'payment',
-        'HOST': 'db',
+        'NAME': 'wallet',
+        'USER': 'root',
+        'PASSWORD': 'victoria1992',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

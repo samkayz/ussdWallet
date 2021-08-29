@@ -46,7 +46,6 @@
 								</thead>
 								<tbody>
 								{% for u in users %}
-								{% if u.is_superuser == False %}
 									<tr>
 										<td>
 											<span>{{forloop.counter}}</span>
@@ -55,21 +54,15 @@
 											<div class="d-flex align-items-center">
 												<div class="avtar-pic w35 bg-red" data-toggle="tooltip" data-placement="top" title="Avatar Name"><span>SS</span></div>
 												<div class="ml-3">
-													<a href="page-invoices-detail.html" title="">{{user.mobile}}</a>
-													{% for w in wallet %}
-														{% if w.mobile == u.mobile %}
-															<p class="mb-0">{{w.acctno}}</p>
-															<p class="mb-0">{{w.bank}}</p>
-														{% endif %}
-													{% endfor %}
+													<a href="#" title="">{{u.fullname}}</a>
+														<p class="mb-0">{{u.accountno}}</p>
+														<p class="mb-0">{{u.bank}}</p>
+														<p class="mb-0">{{u.mobile}}</p>
 												</div>
 											</div>
 										</td>
-										{% for w in wallet %}
-											{% if w.mobile == u.mobile %}
-												<td>₦ {{w.bal|intcomma}}</td>
-											{% endif %}
-										{% endfor %}
+										
+										<td>₦ {{u.bal|intcomma}}</td>
 										<td>
 											{% if is_active == true %}
 												<span class="badge badge-success ml-0 mr-0">ACTIVE</span>
@@ -77,13 +70,12 @@
 												<span class="badge badge-danger ml-0 mr-0">NOT ACTIVE</span>
 											{% endif %}
 										</td>
-										<td><span class="badge badge-success ml-0 mr-0">{{u.role|upper}}</span></td>
+										<td><span class="badge badge-success ml-0 mr-0">{% if u.role == True %} MERCHANT {% else %} CUSTOMER {% endif %}</span></td>
 										<td>
 											<button type="button" class="btn btn-sm btn-default" title="Send Invoice" data-toggle="tooltip" data-placement="top"><i class="icon-envelope"></i></button>
 											<button type="button" class="btn btn-sm btn-default" title="Delete" data-toggle="tooltip" data-placement="top"><i class="icon-paper-plane"></i></button>
 										</td>
 									</tr>
-								{% endif %}
 								{% endfor %}
 								</tbody>
 							</table>

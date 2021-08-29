@@ -231,6 +231,7 @@
                     var bal = {{user_wallet.bal}};
                     var ruser = {{user.mobile}};
                      $("#amount").keyup(function() {
+                         console.log("Hello Am here")
                         if (bal < $('#amount').val() || $('#amount').val() == '' || $('#amount').val() == '0' || $('#amount').val() < 100 || $('#mobile').val() == ruser) 
                             $("#submit").hide();
                         else 

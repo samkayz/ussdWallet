@@ -31,8 +31,7 @@ def log(request):
 @permission_required('is_superuser', login_url='/web/')
 def user(request):
     users = func.GetUser()
-    wallet = func.GetWallet()
-    return render(request, 'web/user.html', {'users':users, 'wallet':wallet})
+    return render(request, 'web/user.html', {'users':users})
 
 
 def logout(request):

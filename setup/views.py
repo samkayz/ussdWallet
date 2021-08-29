@@ -1,3 +1,4 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model, authenticate, login as dj_login, logout as s_logout
@@ -82,7 +83,28 @@ def login(request):
 def signup(request):
     if request.user.is_authenticated:
         return redirect('/home')
-    return render(request, 'signup.html')
+    if request.method == 'POST':
+        mobile = request.POST['mobile']
+        pwd = request.POST['pin']
+
+        if User.objects.filter(mobile=mobile).exists():
+            messages.warning(request, "Mobile number is a register member")
+            return HttpResponseRedirect('/signup')
+        elif len(mobile) > 11 or len(mobile) < 11:
+            messages.warning(request, "Invalid mobile number")
+            return HttpResponseRedirect('/signup')
+        elif mobile[0] != '0':
+            messages.warning(request, "Wrong Mobile Number Formats")
+            return HttpResponseRedirect('/signup')
+        elif len(pwd) > 4:
+            messages.warning(request, "Pin Can't be more than 4 digit")
+            return HttpResponseRedirect('/signup')
+        else:
+            NewFunct.Signup(mobile, pwd)
+            messages.success(request, "Account created. Kindly login to your account")
+            return HttpResponseRedirect('/signup')
+    else:
+        return render(request, 'signup.html')
 
 
 @login_required()

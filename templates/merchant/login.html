@@ -43,7 +43,7 @@
         <div class="login-register" style="background-image:url({% static 'merchant/assets/images/background/login-register.jpg'%});">
             <div class="login-box card">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" method="POST" action="/merchant/login">
+                    <form class="form-horizontal form-material" id="loginform" method="POST" action="/merchant/">
                         {% csrf_token %}
                         <a href="/" class="text-center db">
                             <img src="{% static 'merchant/assets/images/logo-icon.png'%}" alt="Home" /><br/>

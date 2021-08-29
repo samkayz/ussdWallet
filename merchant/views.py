@@ -39,10 +39,10 @@ def login(request):
         passw = request.POST['password']
         if '@' not in email:
             messages.error(request, 'Not an Email')
-            return redirect('/merchant/login')
+            return redirect('/merchant/')
         elif User.objects.filter(email=email, is_merchant=False).exists():
             messages.error(request, 'You are not permitted')
-            return redirect('/merchant/login')
+            return redirect('/merchant/')
         else:
             user = authenticate(mobile=email, password=passw)
             if user is not None:
@@ -54,12 +54,12 @@ def login(request):
                 return response
             else:
                 messages.error(request, 'Invalid Credentials')
-                return redirect('/merchant/login')
+                return redirect('/merchant/')
     else:
         return render(request, 'merchant/login.html')
     
 @login_required(login_url='/merchant/login?next=%s' % (settings.MERCHANT_LOGIN_URL))
-@merchant_required(login_url='/merchant/login')
+@merchant_required(login_url='/merchant/')
 def home(request):
     mobile = request.user.mobile
     bal = func.GetWalletBall(mobile)
@@ -69,16 +69,16 @@ def home(request):
 def logout(request):
     s_logout(request)
     messages.success(request, "Logout Successfully")
-    resp = redirect('/merchant/login')
+    resp = redirect('/merchant/')
     return resp
 
-@merchant_required(login_url='/merchant/login')
+@merchant_required(login_url='/merchant/')
 def transactions(request):
     show = func.GetLog(request)
     return render(request, 'merchant/transactions.html',{'show':show})
 
 
-@merchant_required(login_url='/merchant/login')
+@merchant_required(login_url='/merchant/')
 def business_settings(request):
     mobile = request.user.mobile
     if request.method == "POST":
@@ -96,7 +96,7 @@ def business_settings(request):
     else:
         return render(request, 'merchant/settings.html')
 
-@merchant_required(login_url='/merchant/login')
+@merchant_required(login_url='/merchant/')
 def api_settings(request):
     mobile = request.user.mobile
     if func.BusinessDone(request) == False:

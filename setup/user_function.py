@@ -38,6 +38,9 @@ class UserFunc:
             if User.objects.filter(mobile=mobile, is_superuser=True).exists():
                 messages.error(request, 'You are not permitted')
                 return redirect('/login')
+            elif User.objects.filter(mobile=mobile, is_merchant=True).exists():
+                messages.error(request, 'You are not permitted')
+                return redirect('/login')
             elif user is not None:
                 dj_login(request, user)
                 # request.session.set_expiry(1200)

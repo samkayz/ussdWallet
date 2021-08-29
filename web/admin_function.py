@@ -1,6 +1,6 @@
 from django.http import request
 from .models import *
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login as dj_login, logout as s_logout
 from django.contrib.auth import user_logged_in
@@ -58,7 +58,21 @@ class Main:
 
     def GetUser(self):
         users = User.objects.filter()
-        return users
+        lists = []
+        for i in users:
+            datas = {}
+            if User.objects.filter(mobile=i.mobile, is_superuser=True): continue
+            u = get_object_or_404(Wallet, mobile=i.mobile)
+            datas['fullname'] = i.fullname
+            datas['mobile'] = i.mobile
+            datas['email'] = i.email
+            datas['bal'] = u.bal
+            datas['bank'] = u.bank
+            datas['accountno'] = u.acctno
+            datas['is_active'] = i.is_active
+            datas['role'] = i.is_merchant
+            lists.append(datas)
+        return lists
     
     def GetWallet(self):
         wallet = Wallet.objects.filter()
